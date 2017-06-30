@@ -40,11 +40,11 @@
 function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit.classes="function") {	
 	# OBJECT SIZE (BYTES)
 	sz<- sapply(ls(all=TRUE, envir=envir), 
-			function(x) object.size(get(x, envir=envir)))
+			function(x) object.size(mget(x, envir=envir)[[1]]))
 	if (length(sz)) {
 		# OBJECT CLASS
 		cl<- sapply(ls(all=TRUE, envir=envir), 
-				function(x) class(get(x, envir=envir)))
+				function(x) class(mget(x, envir=envir)[[1]]))
 		# Collapse class the same way we do for dimension
 		# e.g. POSIX dates have class:
 		# 	c("POSIXt",  "POSIXlt")
@@ -53,9 +53,9 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 		# OBJECT DIMENSIONS
 		ll<- lapply(ls(all=TRUE, envir=envir), 
 				function(x) {
-					d<- dim(get(x, envir=envir))
+					d<- dim(mget(x, envir=envir)[[1]])
 					return(	if (!is.null(d)) d 
-						else length(get(x, envir=envir))
+						else length(mget(x, envir=envir)[[1]])
 					)
 				})
 		ll<- unlist(lapply(ll, paste, collapse=" x "))
