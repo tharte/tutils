@@ -1,3 +1,36 @@
+#' List objects in an environment
+#'
+#' Lists objects in a specified environment in a way that is more
+#' useful than \code{\link{ls}}
+#'
+#' @param all \code{\link{logical}} list all objects rather than the first 10
+#' @param envir \code{\link{environment}} the environment in which to list objects
+#' @param sort.by \code{\link{character}} sort on one of \code{Class},
+#'   \code{Dimensions}, \code{Bytes} or by \code{Name}
+#' @param decreasing \code{\link{logical}} should the sort.by be increasing or decreasing?
+#' @param omit.classes \code{\link{character}} type of objects to omit from list
+#'
+#' @return A \code{\link{data.frame}}, with \code{\link{row.names}} being the
+#'   objects in the \code{\link{environment}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{ls}}
+#'
+#' @seealso \code{\link{ls}}, \code{\link{sort.df}}, \code{\link{parent.frame}},
+#'   \code{\link{environment}}
+#'
+#' @examples
+#'	# list objects in the current environment
+#'	whos()
+#'
+#'	# list objects in alphabetical order
+#'	whos(sort="Name")
+#'
+#'	# show all objects (specifically, include functions)
+#'	whos(sort="Name", omit=NULL)
+#'
+#' @export
 `whos`<- function(
     all=TRUE,
     envir=parent.frame(),
