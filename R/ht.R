@@ -1,6 +1,6 @@
 `ht`<- 
 function (x, n = 6, ...) {
-	if (class(x) == "list") {
+	if (any("list" %in% class(x))) {
 		if (is.null(names(x)))
 			    nm <- paste("[[", 1:length(x), "]]", sep = "")
 		else

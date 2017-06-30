@@ -10,7 +10,10 @@
 			require(xlsReadWrite, quietly=FALSE) 
 		},
 		Linux = { 
-			`windows`<- function(width=7, height=7) x11("", width, height)
+			# the (default) type="cairo" for x11 is an antialiasing
+			# graphics engine that is woefully slow on Ubuntu 9.04; type="Xlib" 
+			# produces horridly retro bitmapped graphics; type="nbcairo" is good:
+			`windows`<- function(width=7, height=7) x11("", width, height, type="nbcairo")
 			assign("windows", windows, .GlobalEnv)
 		}
 	)

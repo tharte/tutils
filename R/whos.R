@@ -43,7 +43,7 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 			function(x) object.size(get(x, envir=envir)))
 	if (length(sz)) {
 		# OBJECT CLASS
-		cl<- sapply(ls(all=TRUE, envir=envir), 
+		cl<- lapply(ls(all=TRUE, envir=envir), 
 				function(x) class(get(x, envir=envir)))
 		# Collapse class the same way we do for dimension
 		# e.g. POSIX dates have class:

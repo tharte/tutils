@@ -6,7 +6,7 @@ function (x,
 	if (!length(grep("\\.", x)))
 		if (parse)
 			return(list(basename=x, extension=character(0)))
-		else 	return(character(0))
+		else 	return("")
 	# cf. limma::removeExt 
 	extension<- sub("(.*)\\.(.*)$", "\\2", x)
 	basename<- sub("(.*)\\.(.*)$", "\\1", x)
