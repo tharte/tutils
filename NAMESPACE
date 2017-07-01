@@ -3,4 +3,6 @@
 export(capitalize)
 export(copy)
 export(copy.vars)
+export(first)
+export(last)
 export(whos)

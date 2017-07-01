@@ -5,7 +5,7 @@
 #'	first and last return the first and last (non-\code{NA})
 #'	objects respectively using \code{\link{[}}
 #'
-#' @param x} \code{object} indexable by \code{\link{[}}}
+#' @param x \code{object} indexable by \code{\link{[}}
 #'
 #' @return \code{object} of same \code{mode} as \code{x}
 #'
