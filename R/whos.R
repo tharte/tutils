@@ -1,49 +1,49 @@
-	# whos()
-	# whos(all=TRUE)
-	# whos(all=TRUE)[1:20,,drop=FALSE]
-	# function(all=FALSE, envir=.GlobalEnv) {
-# if (0) {
-#			# first or
-#			objs<- objs[order(rownames(objs), decreasing=decreasing),]
-# }
-# These functions provide access to 'environment's (frames in S
-# terminology) associated with functions further up the calling
-# stack:
-# ?sys.nframe
-#	foo<- function() { qux<- function() {print(sys.nframe())}; qux() }; foo()
-#	foo<- function() { qux<- function() {print(sys.calls())}; qux() }; foo()
-#	foo<- function() { qux<- function() {print(sys.parents())}; qux() }; foo()
-# ?sys.parent
-# ?sys.frame
-#     The parent frame of a function *evaluation* is the environment in
-#     which the function was *called*.  It is not necessarily numbered one
-#     less than the frame number of the current evaluation, nor is it
-#     the environment within which the function was defined. 
-# hence, here sys.frame(-1) : gets the environment of the *calling* frame NOT the parent frame (which is where the function 'whos' is *defined*
-	# of note (and this is actually a very useful idiom for 'whos'):	
-	#		w<- whos()
-	# 		aggregate(w$Bytes, by=list(w$Class), sum)
-	# must assign 'w<- whos()', otherwise
-	# 		aggregate(whos()$Bytes, by=list(whos()$Class), sum)
-	# would, by default, look in 'aggregate's environment
-	# also of note:
-	#		w<- whos()
-	#		split(w, w$Class)
-	#		split(w, w$Class)$function
-# other arguments that I tried:
-# function(all=TRUE, envir=sys.frame(-1), sort.by.size=TRUE, omit.classes=NULL) {	
-# function(all=TRUE, envir=environment(), sort.by.size=TRUE, omit.classes=NULL) {	
-# function(all=FALSE, envir=as.environment(-1), sort.by.size=TRUE) {	
-
-
-`whos`<- 	
-function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit.classes="function") {	
+#' List objects in an environment
+#'
+#' Lists objects in a specified environment in a way that is more
+#' useful than \code{\link{ls}}
+#'
+#' @param all \code{\link{logical}} list all objects rather than the first 10
+#' @param envir \code{\link{environment}} the environment in which to list objects
+#' @param sort.by \code{\link{character}} sort on one of \code{Class},
+#'   \code{Dimensions}, \code{Bytes} or by \code{Name}
+#' @param decreasing \code{\link{logical}} should the sort.by be increasing or decreasing?
+#' @param omit.classes \code{\link{character}} type of objects to omit from list
+#'
+#' @return A \code{\link{data.frame}}, with \code{\link{row.names}} being the
+#'   objects in the \code{\link{environment}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{ls}}
+#'
+#' @seealso \code{\link{ls}}, \code{\link{sort.df}}, \code{\link{parent.frame}},
+#'   \code{\link{environment}}
+#'
+#' @examples
+#'	 # list objects in the current environment
+#'	 whos()
+#'
+#'	 # list objects in alphabetical order
+#'	 whos(sort="Name")
+#'
+#'	 # show all objects (specifically, include functions)
+#'	 whos(sort="Name", omit=NULL)
+#'
+#' @export
+`whos`<- function(
+    all=TRUE,
+    envir=parent.frame(),
+    sort.by="Bytes",
+    decreasing=FALSE,
+    omit.classes="function"
+) {
 	# OBJECT SIZE (BYTES)
-	sz<- sapply(ls(all=TRUE, envir=envir), 
+	sz<- sapply(ls(all=TRUE, envir=envir),
 			function(x) object.size(get(x, envir=envir)))
 	if (length(sz)) {
 		# OBJECT CLASS
-		cl<- lapply(ls(all=TRUE, envir=envir), 
+		cl<- lapply(ls(all=TRUE, envir=envir),
 				function(x) class(get(x, envir=envir)))
 		# Collapse class the same way we do for dimension
 		# e.g. POSIX dates have class:
@@ -51,10 +51,10 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 		cl<- unlist(lapply(cl, paste, collapse = " "))
 
 		# OBJECT DIMENSIONS
-		ll<- lapply(ls(all=TRUE, envir=envir), 
+		ll<- lapply(ls(all=TRUE, envir=envir),
 				function(x) {
 					d<- dim(get(x, envir=envir))
-					return(	if (!is.null(d)) d 
+					return(	if (!is.null(d)) d
 						else length(get(x, envir=envir))
 					)
 				})
@@ -64,7 +64,7 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 		by.name<- which(substr(tolower(sort.by), 1, 1) %in% "n")
 		if (length(by.name)) {
 			# crude hack: add a "Name" column, sort the data.frame
-			# (could be sort on multiple columns), then remove the 
+			# (could be sort on multiple columns), then remove the
 			# "Name" column (because we want to list by rownames)
 			objs[,"Name"]<- rownames(objs)
 			objs<- sort.df(objs, sort.by, decreasing=decreasing)
@@ -82,7 +82,7 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 	}
 	else {
 		# purely cosmetic:
-		objs<- data.frame(Class=NA, Dimensions=NA, Bytes=NA) 
+		objs<- data.frame(Class=NA, Dimensions=NA, Bytes=NA)
 		rownames(objs)<- "NULL"
 		return(objs)
 	}
@@ -92,7 +92,7 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 			warning("omit.classes must be a character vector")
 		else {
 			# omit<- which(objs$Class %in% omit.classes)
-			# allow partial matching & regular-expression class matching, e.g 
+			# allow partial matching & regular-expression class matching, e.g
 			# omit=c("^fun*", "^li*")
 			omit <- unique(unlist(sapply(omit.classes, function(x) grep(x, objs$Class), USE.NAMES=FALSE)))
 			if (length(omit))
@@ -106,4 +106,3 @@ function(all=TRUE, envir=parent.frame(), sort.by="Bytes", decreasing=FALSE, omit
 		else    return(objs)
 	}
 }
-
