@@ -1,9 +1,8 @@
-Package: tutils.dev
+Package: tutils
 Title: Thomas's utility functions to make life easier
-Version: 0.0.0.9000
+Version: 0.1
 Authors@R: person("Thomas", "Harte", email = "tharte@cantab.net", role = c("aut", "cre"))
 Description: Some functions that the author has been using for many years.
-             They could do with much improving.
 Depends: R (>= 3.4.0)
 License: GPL-3
 Encoding: UTF-8
