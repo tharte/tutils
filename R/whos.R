@@ -21,14 +21,14 @@
 #'   \code{\link{environment}}
 #'
 #' @examples
-#'	# list objects in the current environment
-#'	whos()
+#'	 # list objects in the current environment
+#'	 whos()
 #'
-#'	# list objects in alphabetical order
-#'	whos(sort="Name")
+#'	 # list objects in alphabetical order
+#'	 whos(sort="Name")
 #'
-#'	# show all objects (specifically, include functions)
-#'	whos(sort="Name", omit=NULL)
+#'	 # show all objects (specifically, include functions)
+#'	 whos(sort="Name", omit=NULL)
 #'
 #' @export
 `whos`<- function(
