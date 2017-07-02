@@ -29,13 +29,13 @@
 #' @examples
 #'   \dontrun{
 #'	 ## Not run:
-#'	 ## get.ticker.from.Bloomberg("INDU INDEX", field="PX_LAST")
-#'	 ## get.ticker.from.Bloomberg("INDU INDEX", start="2008-01-01")
-#'	 ## get.ticker.from.Bloomberg("INDU INDEX", start="2008-01-01", end="2008-10-31")
+#'	 ## get_ticker_from.Bloomberg("INDU INDEX", field="PX_LAST")
+#'	 ## get_ticker_from.Bloomberg("INDU INDEX", start="2008-01-01")
+#'	 ## get_ticker_from.Bloomberg("INDU INDEX", start="2008-01-01", end="2008-10-31")
 #'   }
 #'
 #' @export
-`get.ticker.from.Bloomberg`<-
+`get_ticker_from_Bloomberg`<-
 function(tickers, 		# Bloomberg ticker symbols
 	field="PX_LAST", 	# Bloomberg data field
 	block=5,		# block size (in years)
