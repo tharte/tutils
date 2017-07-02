@@ -1,6 +1,6 @@
-# Copyright Thomas P. Harte 2017
+# Copyright (2017) Thomas P. Harte
 
-#' tutils.dev: Thomas's functions to make life easy (or easier)
+#' tutils: Thomas's utility functions to make life easy (or easier)
 #'
 #' This package contains some functions that the author has
 #' developed over the years and now can't do without.
@@ -16,6 +16,6 @@
 #'
 #' @docType package
 #'
-#' @name tutils.dev
-#' @rdname tutils.dev_package
+#' @name tutils
+#' @rdname tutils_package
 NULL
