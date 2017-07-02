@@ -34,7 +34,7 @@
 #'
 #' 	# save as a PSV file:
 #' 	filename<- paste(basename, ".psv", sep="")
-#' 	save.zoo(z, file=filename)
+#' 	save_zoo(z, file=filename)
 #' 	# note: column names added by default:
 #' 	file.show(filename)
 #'
@@ -42,16 +42,16 @@
 #' 	colnames(z)<- c("one", "two", "three")
 #' 	# this time save as a CSV file:
 #' 	filename<- paste(basename, ".csv", sep="")
-#' 	save.zoo(z, file=filename)
+#' 	save_zoo(z, file=filename)
 #' 	file.show(filename)
 #'
 #' 	# this time save as a TXT file:
 #' 	filename<- paste(basename, ".txt", sep="")
-#' 	save.zoo(z, file=filename)
+#' 	save_zoo(z, file=filename)
 #' 	file.show(filename)
 #'
 #' 	filename<- paste(basename, ".Rdata", sep="")
-#' 	save.zoo(z, file=filename)
+#' 	save_zoo(z, file=filename)
 #' 	# get rid of 'z':
 #' 	rm(z)
 #' 	# restore 'z':
@@ -61,7 +61,7 @@
 #' 	stopifnot(identical(z, foo))
 #'
 #' @export
-`save.zoo`<- function (z,
+`save_zoo`<- function (z,
 	file=character(0), 	# filename (with extension)
 	append=FALSE, 		# append data to existing file?
     ...
@@ -84,12 +84,12 @@
 		if (length(ext)) {
 			base<- get_file_ext(file, parse=TRUE)$base
 			switch(tolower(ext),
-# TODO: `save.zoo.as.csv`<- function(z, file, digits=NULL, nsmall=0, ...) {
+# TODO: `save_zoo.as.csv`<- function(z, file, digits=NULL, nsmall=0, ...) {
 				"psv" = {
 					write.table(make.xsv.data.frame(z),
 						file=file, quote=FALSE, row.names=FALSE, sep="|", append=append, ...)
 				},
-# TODO: `save.zoo.as.csv`<- function(z, file, digits=NULL, nsmall=0, ...) {
+# TODO: `save_zoo.as.csv`<- function(z, file, digits=NULL, nsmall=0, ...) {
 				"csv" = {
 					write.csv(make.xsv.data.frame(z),
 						file=file, quote=FALSE, row.names=FALSE, append=append, ...)

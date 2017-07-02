@@ -120,6 +120,6 @@ function(tickers, 		# Bloomberg ticker symbols
 
 	## disconnect!!!
 	blpDisconnect(conn)
-	if (length(file)) save.zoo(z, file=file)
+	if (length(file)) save_zoo(z, file=file)
 	return(z[-which(index(z)==remove.date),])
 }
