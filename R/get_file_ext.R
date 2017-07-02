@@ -17,16 +17,16 @@
 #'
 #' @examples
 #'   # "csv" :
-#'   getExtension("foo.bar.csv")
+#'   get_file_ext("foo.bar.csv")
 #'   # "csv" :
-#'   getExtension("foo.bar.csv", parse=TRUE)
+#'   get_file_ext("foo.bar.csv", parse=TRUE)
 #'   # $basename
 #'   # [1] "foo.bar"
 #'   # $extension
 #'   # [1] "csv"
 #'
 #' @export
-`getExtension`<- function (
+`get_file_ext`<- function (
     x,
 	parse=FALSE	# parse the string into basename & file extension
 ) {
