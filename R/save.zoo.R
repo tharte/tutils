@@ -22,7 +22,7 @@
 #'          \code{\link{write.table}},
 #' 	        \code{\link{write.csv}},
 #'          \code{\link{write.xls}},
-#'          \code{\link{getExtension}},
+#'          \code{\link{get_file_ext}},
 #'          \code{\link{zoo}}
 #'
 #' @examples
@@ -80,9 +80,9 @@
 	}
 	stopifnot(is.zoo(z))
 	if (length(file)) {
-		ext<- getExtension(file)
+		ext<- get_file_ext(file)
 		if (length(ext)) {
-			base<- getExtension(file, parse=TRUE)$base
+			base<- get_file_ext(file, parse=TRUE)$base
 			switch(tolower(ext),
 # TODO: `save.zoo.as.csv`<- function(z, file, digits=NULL, nsmall=0, ...) {
 				"psv" = {
