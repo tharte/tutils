@@ -21,7 +21,7 @@
 #'		x<- pi
 #'	}, env=e)
 #'	f<- new.env()
-#'	is.try.error(try(
+#'	is_try_error(try(
 #'		put_var("someVar", from=e, to=f)
 #'	))
 #'	whos(sort="Name", env=f)
@@ -31,6 +31,6 @@
 #'	#NULL    NA         NA    NA
 #'
 #' @export
-`is.try.error`<- function (x) {
+`is_try_error`<- function (x) {
 	return("try-error" %in% class(x))
 }
