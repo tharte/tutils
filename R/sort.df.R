@@ -20,13 +20,13 @@
 #'          \code{\link{data.frame}}
 #' @examples
 #' 	 df<- data.frame(Name=c("one","two","three"), Value=1:3)
-#' 	 sort.df(df, cn="Value", decreasing=TRUE)
+#' 	 sort_df(df, cn="Value", decreasing=TRUE)
 #' 	 # sort first on column "Value", then on column "Name"
 #' 	 # note that both columns are sorted with decreasing=TRUE
-#' 	 sort.df(df, cn=c("Value","Name"), decreasing=TRUE)
+#' 	 sort_df(df, cn=c("Value","Name"), decreasing=TRUE)
 #'
 #' @export
-`sort.df`<-
+`sort_df`<-
 function(x, cn, decreasing=FALSE, na.last=NA) {
 	stopifnot(any("data.frame" %in% class(x)))
 

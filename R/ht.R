@@ -1,6 +1,6 @@
 #' Returns the head and tail part of an object
 #'
-#' \code{\link{sort.df}} sorts the columns of a \code{\link{data.frame}}
+#' Returns the head and tail part of an object
 #'
 #' @param x an object.
 #' @param n \code{\link{integer}}

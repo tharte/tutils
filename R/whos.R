@@ -17,7 +17,7 @@
 #'
 #' @keywords \code{\link{ls}}
 #'
-#' @seealso \code{\link{ls}}, \code{\link{sort.df}}, \code{\link{parent.frame}},
+#' @seealso \code{\link{ls}}, \code{\link{sort_df}}, \code{\link{parent.frame}},
 #'   \code{\link{environment}}
 #'
 #' @examples
@@ -67,11 +67,11 @@
 			# (could be sort on multiple columns), then remove the
 			# "Name" column (because we want to list by rownames)
 			objs[,"Name"]<- rownames(objs)
-			objs<- sort.df(objs, sort.by, decreasing=decreasing)
+			objs<- sort_df(objs, sort.by, decreasing=decreasing)
 			objs<- objs[,-which(colnames(objs) %in% "Name")]
 		}
 		else {
-			objs<- sort.df(objs, sort.by, decreasing=decreasing)
+			objs<- sort_df(objs, sort.by, decreasing=decreasing)
 		}
 		# add a blank line:
 		objs<- rbind(objs, data.frame(Class="", Dimensions="", Bytes=""))
