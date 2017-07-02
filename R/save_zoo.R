@@ -57,7 +57,7 @@
 #' 	# restore 'z':
 #' 	print(load(filename))
 #' 	# restore 'z' as 'foo':
-#' 	foo<- loadAs(filename)
+#' 	foo<- load_as(filename)
 #' 	stopifnot(identical(z, foo))
 #'
 #' @export

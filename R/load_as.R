@@ -1,6 +1,6 @@
 #' Reload a single object written with the function save
 #'
-#' loadAs reloads the contents of a single object that was saved in .Rdata format into the workspace
+#' load_as reloads the contents of a single object that was saved in .Rdata format into the workspace
 #'
 #' @param  file \code{\link{character}} file name of the stored object to reload
 #'
@@ -20,12 +20,12 @@
 #'	## not run:
 #'	## load(file)
 #'	## loads objWithAVeryStrangeName into the workspace which may be undesirable
-#'	x<- loadAs(file)
+#'	x<- load_as(file)
 #'	whos()
 #'	unlink(file)
 #'
 #' @export
-`loadAs`<- function(file) {
+`load_as`<- function(file) {
 	stopifnot(is.character(file), file.exists(file))
 	# make a temporary environment in which to inspect the
 	# contents of file
