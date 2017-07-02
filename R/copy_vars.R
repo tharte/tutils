@@ -30,8 +30,8 @@
 #' whos(sort="Name", env=g)
 #'
 #' @export
-`copy.vars`<- function(from.env, to.env=.GlobalEnv, vars=ls(envir=from.env)) {
-	sapply(vars, function(var) put.var(var, from.env=from.env, to.env=to.env))
+`copy_vars`<- function(from.env, to.env=.GlobalEnv, vars=ls(envir=from.env)) {
+	sapply(vars, function(var) put_var(var, from.env=from.env, to.env=to.env))
 
 	return(invisible())
 }
