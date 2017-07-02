@@ -22,11 +22,11 @@
 #' }, env=e)
 #'
 #' f<- new.env()
-#' copy.vars(from=e, to=f)
+#' copy_vars(from=e, to=f)
 #' whos(sort="Name", env=f)
 #'
 #' g<- new.env()
-#' copy.vars(from=e, to=g, vars=(c("b","x")))
+#' copy_vars(from=e, to=g, vars=(c("b","x")))
 #' whos(sort="Name", env=g)
 #'
 #' @export

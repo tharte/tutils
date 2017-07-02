@@ -22,7 +22,7 @@
 #'	}, env=e)
 #'	f<- new.env()
 #'	is.try.error(try(
-#'		put.var("someVar", from=e, to=f)
+#'		put_var("someVar", from=e, to=f)
 #'	))
 #'	whos(sort="Name", env=f)
 #'	# Error in get(var, envir = fromEnvir) : object 'someVar' not found

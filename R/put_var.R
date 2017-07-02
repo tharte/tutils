@@ -19,10 +19,10 @@
 #' 		x<- pi
 #' 	 }, env=e)
 #'   f<- new.env()
-#' 	 put.var("x", from=e, to=f)
+#' 	 put_var("x", from=e, to=f)
 #' 	 whos(sort="Name", env=f)
 #' @export
-`put.var`<- function(var, from.envir=parent.frame(), to.envir=.GlobalEnv) {
+`put_var`<- function(var, from.envir=parent.frame(), to.envir=.GlobalEnv) {
 	assign(var, get(var, envir=from.envir), envir=to.envir)
 
 	return(invisible())
