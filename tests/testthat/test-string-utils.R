@@ -29,3 +29,47 @@ test_that("'get_file_ext' works", {
   )
 
 })
+
+test_that("'triml' works", {
+  expect_equal(
+      triml(" asdf qwerty \t"), "asdf qwerty \t"
+  )
+
+  expect_equal(
+      triml("\tasdf qwerty \t"), "asdf qwerty \t"
+  )
+
+
+})
+
+test_that("'trimr' works", {
+  expect_equal(
+      trimr(" asdf qwerty \t"), " asdf qwerty"
+  )
+
+  expect_equal(
+      trimr("\tasdf qwerty \t"), "\tasdf qwerty"
+  )
+
+
+})
+
+test_that("'trim' works", {
+  expect_equal(
+      trim(" asdf qwerty \t"), "asdf qwerty"
+  )
+
+  expect_equal(
+      trim("\tasdf qwerty \t"), "asdf qwerty"
+  )
+
+  expect_equal(
+      trim(" asdf qwerty \t"), "asdf qwerty"
+  )
+
+  expect_equal(
+      trim("\tasdf qwerty \t "), "asdf qwerty"
+  )
+
+
+})
