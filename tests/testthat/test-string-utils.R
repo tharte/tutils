@@ -1,4 +1,4 @@
-context("String utilities [in 'string-utils.R']")
+context("String utilities ['string-utils.R']")
 
 test_that("'capitalize' works", {
   expect_equal(
