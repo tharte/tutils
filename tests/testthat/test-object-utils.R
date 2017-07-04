@@ -145,3 +145,18 @@ test_that("'copy_vars' works", {
     expect_equal(e$x, g$x)
 
 })
+
+
+test_that("'put_var' works", {
+    e<- new.env()
+    local({
+        a<- "a"
+        b<- "this is 'b'"
+        x<- pi
+    }, env=e)
+    f<- new.env()
+    put_var("x", from=e, to=f)
+
+    expect_equal(e$x, f$x)
+
+})
