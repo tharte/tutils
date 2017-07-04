@@ -32,3 +32,14 @@ test_that("'get_return' works", {
     expect_equal(get_return(c(NaN,1,1.1)), 0.1)
     expect_equal(get_return(c(1,+Inf,1.1)), 0.1)
 })
+
+
+test_that("'get_diff' works", {
+
+    expect_equal(get_diff(NA), NA)
+    expect_equal(get_diff(c(NA,NA)), NA)
+    expect_equal(get_diff(c(NaN,NA)), NA)
+    expect_equal(get_diff(c(NaN,1,1.1)), 0.1)
+    expect_equal(get_diff(c(1,+Inf,1.1)), 0.1)
+    expect_equal(get_diff(c(1,0,1.1)), 0.1)
+})

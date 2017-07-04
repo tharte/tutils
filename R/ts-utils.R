@@ -79,6 +79,7 @@
 #'   get_return(c(NaN, NA))
 #'   get_return(c(NaN, 1, 1.1), nan.replace=TRUE)
 #'   get_return(c(1, +Inf, 1.1), nan.replace=TRUE)
+#'
 #' @export
 `get_return`<- function(
     x,
@@ -105,6 +106,46 @@
 		if (is.nan(r) | is.infinite(r))
 			return (NA)
 	}
+
+	return(r)
+}
+
+
+#' Compute the difference of values in vector
+#'
+#' Compute the difference of values in vector
+#'
+#' @param  x \code{\link{numeric}} \code{\link{vector}}
+#'
+#' @return \code{\link{numeric}} \code{\link{vector}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{numeric}}, \code{\link{diff}}
+#'
+#' @seealso \code{\link{numeric}}, \code{\link{diff}}
+#'
+#' @examples
+#'   get_diff(c(NA))
+#'   get_diff(c(NA, NA))
+#'   get_diff(c(NaN, NA))
+#'   get_diff(c(NaN, 1, 1.1))
+#'   get_diff(c(1, +Inf, 1.1))
+#'
+#' @export
+`get_diff`<- function(x) {
+	if (is.zoo(x)) x<- as.numeric(x)
+	x<- na.omit(x)
+	n<- length(x)
+
+	# we can only take a diff when we have values for x[1] & x[2]
+	if (n<2) return(NA)
+
+	# if the values of x[1] and x[n] are one of 0 or the not-a-number symbols:
+	#	0, NA, NaN, +Inf, -Inf
+	# then a NaN (non-a-number) symbol will result
+
+	r<- x[n]-x[1]
 
 	return(r)
 }
