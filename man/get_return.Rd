@@ -24,6 +24,10 @@ Compute (simple net) return of values in vector
   get_return(c(NaN, 1, 1.1), nan.replace=TRUE)
   get_return(c(1, +Inf, 1.1), nan.replace=TRUE)
 
+  (z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=seq(as.Date("2011-01-01"), by=1, len=6)))
+  zoo::rollapply(z, 2, get_return, align="right", nan.replace=TRUE)
+  zoo::rollapply(z, 2, get.return, align="right", nan.replace=FALSE)
+
 }
 \seealso{
 \code{\link{numeric}}, \code{\link{NaN}}, \code{\link{vector}}
