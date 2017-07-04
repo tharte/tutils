@@ -75,8 +75,8 @@
 	# nothing specified anywhere, so make some reasonable guesses:
 	else if (is.null(.top.dir) & !exists(".top.dir", env=.GlobalEnv)) {
 		switch(Sys.info()["sysname"],
-			Windows = { .top.dir<- "c:/tc" },
-			Linux   = { .top.dir<- "~/tc" }
+			Windows = { .top.dir<- "c:" },
+			Linux   = { .top.dir<- "~/" }
 		)
 	}
 	assign(".top.dir", .top.dir, .GlobalEnv)

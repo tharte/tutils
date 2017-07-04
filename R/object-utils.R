@@ -17,7 +17,7 @@
 #'
 #' @examples
 #'   # from the following phrases
-#'   str<- c("hallo there", "how are you?")
+#'   str<- c("hello there", "how are you?")
 #'   cat(paste(str), sep="\n")
 #'   # extract the first words:
 #'   sapply(strsplit(str, " "), first)
@@ -327,6 +327,7 @@ function(x, y) {
 	return (x)
 }
 }
+
 #' Copy variables from one environment to another environment
 #'
 #' @param from.env \code{\link{environment}} where variables are to be copied from

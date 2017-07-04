@@ -29,7 +29,7 @@ Extract first / last object
 }
 \examples{
   # from the following phrases
-  str<- c("hallo there", "how are you?")
+  str<- c("hello there", "how are you?")
   cat(paste(str), sep="\\n")
   # extract the first words:
   sapply(strsplit(str, " "), first)
