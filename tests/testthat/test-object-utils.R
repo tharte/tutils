@@ -160,3 +160,25 @@ test_that("'put_var' works", {
     expect_equal(e$x, f$x)
 
 })
+
+test_that("'is_try_error' works", {
+    e<- new.env()
+    local({
+        a<- "a"
+        b<- "this is 'b'"
+        x<- pi
+    }, env=e)
+    f<- new.env()
+
+    op<- options()
+    options(show.error.messages=FALSE)
+
+    expect_true(
+        is_try_error(try(
+            put_var("someVar", from=e, to=f)
+        ))
+    )
+
+    options(op)
+
+})
