@@ -123,3 +123,25 @@ test_that("'push_back' works", {
     expect_equal(x[2], y[1])
 
 })
+
+
+test_that("'copy_vars' works", {
+    e<- new.env()
+    local({
+        a<- "a"
+        b<- "this is 'b'"
+        x<- pi
+    }, env=e)
+
+    f<- new.env()
+    copy_vars(from=e, to=f)
+    expect_equal(e$a, f$a)
+    expect_equal(e$b, f$b)
+    expect_equal(e$x, f$x)
+
+    g<- new.env()
+    copy_vars(from=e, to=g, vars=(c("b","x")))
+    expect_equal(e$b, g$b)
+    expect_equal(e$x, g$x)
+
+})
