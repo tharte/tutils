@@ -56,3 +56,55 @@
 `is_yearmon`<- function(x) {
     inherits(x, "yearmon")
 }
+
+
+#' Compute (simple net) return of values in vector
+#'
+#' Compute (simple net) return of values in vector
+#'
+#' @param  x \code{\link{numeric}} \code{\link{vector}}
+#' @param  nan.replace \code{\link{logical}} if TRUE, replace \code{\link{NaN}} (not-a-number) symbols with \code{NA}
+#'
+#' @return \code{\link{numeric}} \code{\link{vector}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{numeric}}, \code{\link{NaN}}, \code{\link{vector}}
+#'
+#' @seealso \code{\link{numeric}}, \code{\link{NaN}}, \code{\link{vector}}
+#'
+#' @examples
+#'   get_return(c(NA))
+#'   get_return(c(NA, NA))
+#'   get_return(c(NaN, NA))
+#'   get_return(c(NaN, 1, 1.1), nan.replace=TRUE)
+#'   get_return(c(1, +Inf, 1.1), nan.replace=TRUE)
+#' @export
+`get_return`<- function(
+    x,
+	nan.replace=FALSE
+) {
+	if (is.zoo(x))
+        x<- as.numeric(x)
+	x<- na.omit(x)
+	n<- length(x)
+
+	# we can only take a return when we have values for x[1] & x[2]
+	# regardless of whether or not they are one of:
+	#	0, NA, NaN, +Inf, -Inf
+
+	if (n<2) return(NA)
+
+	# if the values of x[1] and x[n] are one of:
+	#	0, NA, NaN, +Inf, -Inf
+	# then a non-a-number symbol will result
+
+	r<- x[n]/x[1]-1
+
+	if (nan.replace) {
+		if (is.nan(r) | is.infinite(r))
+			return (NA)
+	}
+
+	return(r)
+}
