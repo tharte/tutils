@@ -182,3 +182,17 @@ test_that("'is_try_error' works", {
     options(op)
 
 })
+
+
+test_that("'load_as' works", {
+    file<- paste(tempfile(), ".Rdata", sep="")
+    set.seed(1)
+    objectWithAVeryStrangeName<- rnorm(10)
+    save(objectWithAVeryStrangeName, file=file)
+    x<- load_as(file)
+
+    expect_equal(x, objectWithAVeryStrangeName)
+
+    unlink(file)
+
+})
