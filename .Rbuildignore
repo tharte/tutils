@@ -1,1 +1,1 @@
-*~  # Emacs [or EVIL mode / Vim] back-up files
+^.*~$  # Emacs [or EVIL mode / Vim] back-up files
