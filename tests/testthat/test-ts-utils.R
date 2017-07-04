@@ -31,12 +31,12 @@ test_that("'get_return' works", {
     expect_equal(get_return(c(NaN,1,1.1)), 0.1)
     expect_equal(get_return(c(1,+Inf,1.1)), 0.1)
 
-	z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=seq(as.Date("2011-01-01"), by=1, len=6))
+    dates<- seq(as.Date("2011-01-01"), by=1, len=6)
+	z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
 
     z.res1<- zoo(
         c(NA, 1.0, 0.5, -1.0, NA),
-        order.by=
-        as.Date(c("2011-01-02","2011-01-03","2011-01-04","2011-01-05","2011-01-06"))
+        order.by=dates[2:length(dates)]
     )
     # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
     #	  NA        1.0        0.5       -1.0         NA
@@ -49,8 +49,7 @@ test_that("'get_return' works", {
 
     z.res2<- zoo(
         c(NA, 1.0, 0.5, -1.0, NaN),
-        order.by=
-        as.Date(c("2011-01-02","2011-01-03","2011-01-04","2011-01-05","2011-01-06"))
+        order.by=dates[2:length(dates)]
     )
 	# 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
 	# 	  NA        1.0        0.5       -1.0        NaN
@@ -64,11 +63,25 @@ test_that("'get_return' works", {
 
 
 test_that("'get_diff' works", {
-
     expect_equal(get_diff(NA), NA)
     expect_equal(get_diff(c(NA,NA)), NA)
     expect_equal(get_diff(c(NaN,NA)), NA)
     expect_equal(get_diff(c(NaN,1,1.1)), 0.1)
     expect_equal(get_diff(c(1,+Inf,1.1)), 0.1)
     expect_equal(get_diff(c(1,0,1.1)), 0.1)
+
+    dates<- seq(as.Date("2011-01-01"), by=1, len=6)
+	z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
+
+    z.res1<- zoo(
+        c(NA, 1.0, 1.0, -3.0, 0),
+        order.by=dates[2:length(dates)]
+    )
+    # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
+    #	  NA        1.0        1.0       -3.0         0
+
+    expect_equal(
+        zoo::rollapply(z, 2, get_diff, align="right"),
+        z.res1
+    )
 })

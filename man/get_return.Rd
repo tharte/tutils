@@ -24,9 +24,16 @@ Compute (simple net) return of values in vector
   get_return(c(NaN, 1, 1.1), nan.replace=TRUE)
   get_return(c(1, +Inf, 1.1), nan.replace=TRUE)
 
-  (z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=seq(as.Date("2011-01-01"), by=1, len=6)))
+  dates<- seq(as.Date("2011-01-01"), by=1, len=6)
+ z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
+
   zoo::rollapply(z, 2, get_return, align="right", nan.replace=TRUE)
+  # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
+  #	  NA        1.0        0.5       -1.0         NA
+
   zoo::rollapply(z, 2, get.return, align="right", nan.replace=FALSE)
+  # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
+  #	  NA        1.0        0.5       -1.0         NaN
 
 }
 \seealso{
