@@ -63,3 +63,63 @@ test_that("'copy' works", {
     }
 
 })
+
+test_that("'push_back' works", {
+    # zero-length list x: append zero-length object y:
+    expect_equal(
+        push_back(list(), list()),
+        list()
+    )
+
+    # zero-length list x: append non-list object:
+    x<- list()
+
+    expect_equal(
+        push_back(x, "one"),
+        list("one")
+    )
+
+
+    # unnamed list x: append non-list object:
+    x<- list()
+    x[[1]]<- "one"
+    x<- push_back(x, 2)
+
+    expect_equal(x[1], list("one"))
+    expect_equal(x[2], list(2))
+
+
+    # named list x: append non-list object:
+    x<- list()
+    x[["one"]]<- 1
+    expect_equal(
+        push_back(x, "two")[[2]],
+        "two"
+    )
+
+
+    # unnamed list x: append unnamed list object y:
+    x<- list()
+    x[[1]]<- "one"
+
+    y<- list();
+    y[[1]]<- 2;
+
+    x<- push_back(x, y)
+
+    expect_equal(x[2], list(2))
+
+
+    # named list x: append named list object y:
+    x<- list()
+    x[[1]]<- "one"
+
+    y<- list();
+    y[[1]]<- 2;
+    names(y)<- "two"
+
+    x<- push_back(x, y)
+
+    expect_equal(x[2], y[1])
+
+})
