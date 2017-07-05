@@ -196,3 +196,20 @@ test_that("'load_as' works", {
     unlink(file)
 
 })
+
+
+test_that("'col_classes' works", {
+	DF<- data.frame(
+        names=c("one","two","three"),
+        numbers=1:3,
+        stringsAsFactors=FALSE
+    )
+
+	out<- col_classes(DF)
+
+	expect_true(all(colnames(out)==c("names","numbers")))
+	expect_true(out["names"] == "character")
+	expect_true(out["numbers"] == "integer")
+
+})
+

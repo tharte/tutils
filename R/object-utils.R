@@ -755,3 +755,51 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 	}
 	else error("'file' is empty ... cannot save data")
 }
+
+
+#' Get column classes in \code{\link{data.frame}}
+#'
+#' Get column classes in \code{\link{data.frame}}
+#'
+#' @param  DF \code{\link{data.frame}} or \code{\link{matrix}}
+#' @param  flip \code{\link{logical}} flips results sideways, if \code{TRUE}
+#'
+#' @return named \code{\link{vector}} of \code{\link{character}} strings
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{class}}
+#'
+#' @seealso \code{\link{class}}
+#'
+#' @examples
+#'	 DF<- data.frame(
+#'        names=c("one","two","three"),
+#'        numbers=1:3,
+#'        stringsAsFactors=FALSE
+#'   )
+#'
+#'	 out<- col_classes(DF)
+#'
+#'	 all(colnames(out)==c("names","numbers"))
+#'	 out["names"] == "character"
+#'	 out["numbers"] == "integer"
+#'
+#' @export
+`col_classes`<- function(DF, flip=FALSE) {
+	assert(inherits(DF, "data.frame") | is.matrix(DF))
+
+    if (all(dim(DF)==c(0,0)))
+        return(matrix(, nr=0, nc=0))
+
+	out<-        character(ncol(DF))
+	names(out)<- colnames(DF)
+
+	for (col in 1:ncol(DF))
+		out[col]<- paste(class(DF[[col]]), collapse=", ")
+
+    if (flip)
+        return(as.matrix(out))
+
+	return(out)
+}
