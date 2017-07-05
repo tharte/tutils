@@ -121,3 +121,28 @@ function(str) {
 		stop("input must be of mode 'character'")
 	gsub('[[:space:]]+$', '', str)
 }
+
+
+#' checks if a string is blank
+#'
+#' checks if a string is blank
+#'
+#' @param  x \code{\link{character}} string to check
+#'
+#' @return \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{character}}
+#'
+#' @seealso \code{\link{character}}
+#'
+#' @examples
+#'   is_blank("")
+#'
+#' @export
+`is_blank`<- function(x) {
+    assert(is.character(x))
+
+	all(x == "")
+}

@@ -71,5 +71,20 @@ test_that("'trim' works", {
       trim("\tasdf qwerty \t "), "asdf qwerty"
   )
 
+})
+
+test_that("'is_blank' works", {
+  expect_true(
+      is_blank("")
+  )
+
+  expect_true(
+      is_blank(rep("", 4))
+  )
+
+  expect_false(
+      is_blank(c("hello", rep("", 4)))
+  )
+
 
 })
