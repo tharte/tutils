@@ -803,3 +803,85 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 
 	return(out)
 }
+
+
+#' Find row-col location of a search string in \code{\link{data.frame}}
+#'
+#' Description: What the function does in more detail
+#'
+#' @param  term \code{\link{character}} string to search for
+#' @param  DF \code{\link{data.frame}} or \code{\link{matrix}} to search
+#' @param  ROW.FUN \code{\link{function}} for row search
+#' @param  COL.FUN \code{\link{function}} for column search
+#'
+#' @return named \code{\link{vector}} with row & col location of search
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{match}}, \code{\link{grep}}
+#'
+#' @seealso \code{\link{match}}, \code{\link{grep}}
+#'
+#' @examples
+#'	tab<- read.csv(con<- textConnection(
+#'	"Name,    Age, Salary
+#'	 Derek  ,  NA,    32k		# <- NOTE: 'Derek  '
+#'	 Tom,      26,    21k
+#'	 NA,       NA,     NA
+#'	 Harry,    31,    50k"
+#'	), header=TRUE, colClasses=c("character","integer","character"), comment.char="#"); close(con)
+#'
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="first", COL.FUN="first")
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="first", COL.FUN="last")
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="last", COL.FUN="first")
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="last", COL.FUN="last")
+#'
+#'	result<-        rep(NA,2)
+#'	names(result)<- c("row","col")
+#'
+#'	result["row"]<- 1; result["col"]<- 1
+#'	all.equal(match_col("k", tab, ROW.FUN=tutils::first, COL.FUN=tutils::first), result)
+#'
+#'	result["row"]<- 1; result["col"]<- 3
+#'	all.equal(match_col("k", tab, ROW.FUN=tutils::first, COL.FUN=tutils::last), result)
+#'
+#'	result["row"]<- 4; result["col"]<- 1
+#'	all.equal(match_col("r", tab, ROW.FUN=tutils::last, COL.FUN=tutils::first), result)	# <- NOTE: testing for "r"
+#'
+#'	result["row"]<- 4; result["col"]<- 3
+#'	all.equal(match_col("k", tab, ROW.FUN=tutils::last, COL.FUN=tutils::last), result)	# <- NOTE: testing for "k"
+#'
+#' @export
+`match_col`<- function(
+	term,
+	DF,
+	ROW.FUN=c("first", "last"),
+	COL.FUN=c("first", "last")
+) {
+    `make_row_col`<- function() {
+        out<-        rep(NA, 2)
+        names(out)<- c("row", "col")
+
+        return(out)
+    }
+
+	assert(
+        is.character(term),
+        inherits(DF, "data.frame") | is.matrix(DF)
+    )
+
+	ROW.FUN<- match.fun(ROW.FUN)
+	COL.FUN<- match.fun(COL.FUN)
+	out<-     make_row_col()
+
+	if (any(cols.character<- col_classes(DF) %in% "character")) {
+		rows<- apply(DF, 1, FUN=function(x) COL.FUN(grep(term, x)))
+		ix<-   which(!is.na(rows))
+		if (length(ix)) {
+			out["row"]<- ROW.FUN(ix)
+			out["col"]<- rows[out["row"]]
+		}
+	}
+
+	return(out)
+}

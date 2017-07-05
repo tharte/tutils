@@ -213,3 +213,34 @@ test_that("'col_classes' works", {
 
 })
 
+
+test_that("'match_col' works", {
+	tab<- read.csv(con<- textConnection(
+	"Name,    Age, Salary
+	 Derek  ,  NA,    32k		# <- NOTE: 'Derek  '
+	 Tom,      26,    21k
+	 NA,       NA,     NA
+	 Harry,    31,    50k"
+	), header=TRUE, colClasses=c("character","integer","character"), comment.char="#"); close(con)
+
+	expect_true(all(is.na( match_col("NON-MATCHING-STRING", tab, ROW.FUN="first", COL.FUN="first") )))
+	expect_true(all(is.na( match_col("NON-MATCHING-STRING", tab, ROW.FUN="first", COL.FUN="last") )))
+	expect_true(all(is.na( match_col("NON-MATCHING-STRING", tab, ROW.FUN="last", COL.FUN="first") )))
+	expect_true(all(is.na( match_col("NON-MATCHING-STRING", tab, ROW.FUN="last", COL.FUN="last") )))
+
+	result<-        rep(NA,2)
+	names(result)<- c("row","col")
+	result["row"]<- 1; result["col"]<- 1
+
+	expect_true(all.equal(match_col("k", tab, ROW.FUN=tutils::first, COL.FUN=tutils::first), result))
+
+	result["row"]<- 1; result["col"]<- 3
+	expect_true(all.equal(match_col("k", tab, ROW.FUN=tutils::first, COL.FUN=tutils::last), result))
+
+	result["row"]<- 4; result["col"]<- 1
+	expect_true(all.equal(match_col("r", tab, ROW.FUN=tutils::last, COL.FUN=tutils::first), result))	# <- NOTE: testing for "r"
+
+	result["row"]<- 4; result["col"]<- 3
+	expect_true(all.equal(match_col("k", tab, ROW.FUN=tutils::last, COL.FUN=tutils::last), result))	# <- NOTE: testing for "k"
+
+})
