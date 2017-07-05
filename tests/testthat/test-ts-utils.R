@@ -1,6 +1,8 @@
 context("Time-series and Date utilities ['ts-utils.R']")
 
 library(zoo)
+library(magrittr)
+library(dplyr)
 
 test_that("'is_Date' works", {
     expect_true(is_Date(as.Date("2017-07-04")))
@@ -55,7 +57,7 @@ test_that("'get_return' works", {
 	# 	  NA        1.0        0.5       -1.0        NaN
 
     expect_equal(
-        zoo::rollapply(z, 2, get.return, align="right", nan.replace=FALSE),
+        zoo::rollapply(z, 2, get_return, align="right", nan.replace=FALSE),
         z.res2
     )
 
@@ -84,4 +86,22 @@ test_that("'get_diff' works", {
         zoo::rollapply(z, 2, get_diff, align="right"),
         z.res1
     )
+})
+
+
+test_that("'to_ISO_8601' works", {
+    tab<-  make_ISO_8601_test_table()
+    tab %<>% mutate(`Output`=as.character(NA))
+
+    for (row in 1:nrow(tab)) {
+        tab[row, "Output"]<- to_ISO_8601(
+            str=tab[row, "Test"],
+            year.left=tab[row, "year.left"],
+            american=tab[row, "american"]
+        ) %>% as.character
+    }
+
+    tab %<>% mutate(`success`=`Expected`==`Output`)
+
+    expect_true(all(tab$success))
 })

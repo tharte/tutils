@@ -74,6 +74,7 @@
 #' @seealso \code{\link{numeric}}, \code{\link{NaN}}, \code{\link{vector}}
 #'
 #' @examples
+#'   require(zoo)
 #'   get_return(c(NA))
 #'   get_return(c(NA, NA))
 #'   get_return(c(NaN, NA))
@@ -137,6 +138,7 @@
 #' @seealso \code{\link{numeric}}, \code{\link{diff}}
 #'
 #' @examples
+#'   require(zoo)
 #'   get_diff(c(NA))
 #'   get_diff(c(NA, NA))
 #'   get_diff(c(NaN, NA))
@@ -168,28 +170,39 @@
 	return(r)
 }
 
-#' Compute the difference of values in vector
+#' Coerce character strings to the Date class
 #'
-#' Compute the difference of values in vector
+#' Coerce character strings to Date class by judiciously guessing the strings' format
 #'
-#' @param  strs \code{\link{character}}
-#' @param  year.left \code{\link{logical}}
-#' @param  american \code{\link{logical}}
-#'
+#' @param  strs \code{\link{character}} string to convert to ISO 8601
+#' @param  year.left \code{\link{logical}} give \code{to_ISO_8601} a hint: does
+#'   the year occur on the left \code{TRUE} or on the right \code{FALSE}
+#' @param  american \code{\link{logical}} does the string follow the bizarre American
+#'   convention for writing dates, viz. MM-DD-YYYY
 #' @return \code{\link{Date}} \code{\link{vector}}
 #'
 #' @author Thomas P. Harte
 #'
 #' @keywords \code{\link{Date}}
 #'
-#' @seealso \code{\link{Dae}}
+#' @seealso \code{\link{Date}}, \url{https://xkcd.com/1179}
 #'
 #' @examples
-#'   to_ISO_8601(c(NA))
-#'   to_ISO_8601(c(NA, NA))
-#'   to_ISO_8601(c(NaN, NA))
-#'   to_ISO_8601(c(NaN, 1, 1.1))
-#'   to_ISO_8601(c(1, +Inf, 1.1))
+#'    require(zoo)
+#'    require(magrittr)
+#'    require(dplyr)
+#'    tab<-  tutils:::make_ISO_8601_test_table()
+#'    tab %<>% mutate(`Output`=as.character(NA))
+#'
+#'    for (row in 1:nrow(tab)) {
+#'        tab[row, "Output"]<- to_ISO_8601(
+#'            str=tab[row, "Test"],
+#'            year.left=tab[row, "year.left"],
+#'            american=tab[row, "american"]
+#'        ) %>% as.character
+#'    }
+#'
+#'    (tab %<>% mutate(`success`=`Expected`==`Output`))
 #'
 #' @export
 `to_ISO_8601`<- function(strs, year.left=TRUE, american=FALSE) {
@@ -220,7 +233,7 @@
         strs<- tutils::trim(strs)
         rx<-  ","
         strs<- gsub(rx, "", strs)
-        strs<- replace(strs, is.blank(strs) | is.na(strs), NA)
+        strs<- replace(strs, is_blank(strs) | is.na(strs), NA)
 
         .obj[["ix"]]<<- which(!is.na(strs))
 
@@ -608,4 +621,145 @@
     }
 
     return(out)
+}
+
+`make_ISO_8601_test_table`<- function() {
+    #FIXME
+    #to.ISO.8601("32-4-32", american=FALSE)
+    #Error: all(.obj$singleton) is not TRUE
+    #> to.ISO.8601("32-4-31", american=FALSE)
+    #[1] NA
+    #> to.ISO.8601("32-4-31", american=FALSE)
+    #[1] NA
+    #> to.ISO.8601("32-04-31", american=FALSE)
+    #[1] NA
+    #> to.ISO.8601("33-04-31", american=FALSE)
+    #[1] NA
+    #> to.ISO.8601("33-04-31", year.left=TRUE)
+    #[1] NA
+    tab<- read.table(text=
+           "Test|ISO 8601|Class|year.left|american
+            Dec 13|2013-12|yearmon|TRUE|FALSE
+            Dec 13|2013-12|yearmon|FALSE|FALSE
+            Jan 01|2001-01|yearmon|TRUE|FALSE
+            Jan 01|2001-01|yearmon|FALSE|FALSE
+            13 Dec|2013-12|yearmon|TRUE|FALSE
+            13 Dec|2013-12|yearmon|FALSE|FALSE
+            01 Jan|2001-01|yearmon|TRUE|FALSE
+            01 Jan|2001-01|yearmon|FALSE|FALSE
+            Dec 2013|2013-12|yearmon|TRUE|FALSE
+            Dec 2013|2013-12|yearmon|FALSE|FALSE
+            Jan 2001|2001-01|yearmon|TRUE|FALSE
+            Jan 2001|2001-01|yearmon|FALSE|FALSE
+            2013 Dec|2013-12|yearmon|TRUE|FALSE
+            2013 Dec|2013-12|yearmon|FALSE|FALSE
+            2001 Jan|2001-01|yearmon|TRUE|FALSE
+            2001 Jan|2001-01|yearmon|FALSE|FALSE
+            12 13|2013-12|yearmon|TRUE|FALSE
+            12 13|2013-12|yearmon|FALSE|FALSE
+            01 01|2001-01|yearmon|TRUE|FALSE
+            01 01|2001-01|yearmon|FALSE|FALSE
+            2013/Dec/12|2013-12-12|Date|TRUE|FALSE
+            2013/Dec/12|2013-12-12|Date|FALSE|FALSE
+            2001/Jan/01|2001-01-01|Date|TRUE|FALSE
+            2001/Jan/01|2001-01-01|Date|FALSE|FALSE
+            12/Dec/2013|2013-12-12|Date|TRUE|FALSE
+            12/Dec/2013|2013-12-12|Date|FALSE|FALSE
+            01/Jan/2001|2001-01-01|Date|TRUE|FALSE
+            01/Jan/2001|2001-01-01|Date|FALSE|FALSE
+            13/12/12|2013-12-12|Date|TRUE|FALSE
+            13/12/12|2012-12-13|Date|FALSE|FALSE
+            01/01/01|2001-01-01|Date|TRUE|FALSE
+            01/01/01|2001-01-01|Date|FALSE|FALSE
+            01/04/14|2001-04-14|Date|TRUE|FALSE
+            01/04/14|2014-04-01|Date|FALSE|FALSE
+            01/04/14|2014-01-04|Date|TRUE|TRUE
+            01/04/14|2014-01-04|Date|FALSE|TRUE
+            12/12/13|2012-12-13|Date|TRUE|FALSE
+            12/12/13|2013-12-12|Date|FALSE|FALSE
+            01/01/01|2001-01-01|Date|TRUE|FALSE
+            01/01/01|2001-01-01|Date|FALSE|FALSE
+            2013/12/12|2013-12-12|Date|TRUE|FALSE
+            2013/12/12|2013-12-12|Date|FALSE|FALSE
+            2001/01/01|2001-01-01|Date|TRUE|FALSE
+            2001/01/01|2001-01-01|Date|FALSE|FALSE
+            12/12/2013|2013-12-12|Date|TRUE|FALSE
+            12/12/2013|2013-12-12|Date|FALSE|FALSE
+            01/01/2001|2001-01-01|Date|TRUE|FALSE
+            01/01/2001|2001-01-01|Date|FALSE|FALSE
+            01/04/2014|2014-04-01|Date|TRUE|FALSE
+            01/04/2014|2014-04-01|Date|FALSE|FALSE
+            01/04/2014|2014-01-04|Date|TRUE|TRUE
+            01/04/2014|2014-01-04|Date|FALSE|TRUE
+            2014-4-29|2014-04-29|Date|TRUE|FALSE
+            2014-4-29|2014-04-29|Date|FALSE|FALSE
+            2014-04-29|2014-04-29|Date|TRUE|FALSE
+            2014-04-29|2014-04-29|Date|FALSE|FALSE
+            2014-05-30|2014-05-30|Date|TRUE|FALSE
+            2014-05-30|2014-05-30|Date|FALSE|FALSE
+            29-04-2014|2014-04-29|Date|TRUE|FALSE
+            29-04-2014|2014-04-29|Date|FALSE|FALSE
+            30-05-2014|2014-05-30|Date|TRUE|FALSE
+            30-05-2014|2014-05-30|Date|FALSE|FALSE
+            29 Apr 13|2029-04-13|Date|TRUE|FALSE
+            29 Apr 13|2013-04-29|Date|FALSE|FALSE
+            30 May 14|2030-05-14|Date|TRUE|FALSE
+            30 May 14|2014-05-30|Date|FALSE|FALSE
+            29:Apr:13|2029-04-13|Date|TRUE|FALSE
+            29:Apr:13|2013-04-29|Date|FALSE|FALSE
+            30:May:14|2030-05-14|Date|TRUE|FALSE
+            30:May:14|2014-05-30|Date|FALSE|FALSE
+            Apr:13|2013-04|yearmon|TRUE|FALSE
+            Apr:13|2013-04|yearmon|FALSE|FALSE
+            May:14|2014-05|yearmon|TRUE|FALSE
+            May:14|2014-05|yearmon|FALSE|FALSE
+            13:Apr|2013-04|yearmon|TRUE|FALSE
+            13:Apr|2013-04|yearmon|FALSE|FALSE
+            14:May|2014-05|yearmon|TRUE|FALSE
+            14:May|2014-05|yearmon|FALSE|FALSE
+            29 12 13|2029-12-13|Date|TRUE|FALSE
+            29 12 13|2013-12-29|Date|FALSE|FALSE
+            30 12 14|2030-12-14|Date|TRUE|FALSE
+            30 12 14|2014-12-30|Date|FALSE|FALSE
+            29 12 2013|2013-12-29|Date|TRUE|FALSE
+            29 12 2013|2013-12-29|Date|FALSE|FALSE
+            30 12 2014|2014-12-30|Date|TRUE|FALSE
+            30 12 2014|2014-12-30|Date|FALSE|FALSE
+            2013 12 29|2013-12-29|Date|TRUE|FALSE
+            2013 12 29|2013-12-29|Date|FALSE|FALSE
+            2014 12 30|2014-12-30|Date|TRUE|FALSE
+            2014 12 30|2014-12-30|Date|FALSE|FALSE",
+                     sep="|",
+                     stringsAsFactors=FALSE,
+                     header=TRUE,
+                     colClass="character",
+                     check.names=FALSE
+    )
+    for (col in 1:ncol(tab)) tab[,col]<- tutils::trim(tab[,col])
+    tab %<>% mutate(`Expected`=as.character(NA))
+
+    `ISO_8601_to_character_expected_per_class`<- function(tab) {
+        for (row in 1:nrow(tab)) {
+            iso.char<- tab[row, "ISO 8601"]
+            if (tab[row, "Class"]=="yearmon") {
+                dt.char<- paste(iso.char,"01",sep="-")
+            }
+            else {
+                dt.char<- iso.char
+            }
+            tab[row,"Expected"]<- as.character(
+                eval(parse(text=sprintf("as.%s(\"%s\")\n", tab[row, "Class"], dt.char)))
+            )
+        }
+
+        tab
+    }
+    # tab<- ISO_8601_to_expected_for_class(tab)
+    tab %<>% ISO_8601_to_character_expected_per_class()
+    stopifnot(!any(is.na(tab)))
+
+    year.left<-     as.logical(tab[, "year.left"])
+    american<-      as.logical(tab[, "american"])
+
+    tab
 }

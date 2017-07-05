@@ -18,6 +18,7 @@ get_return(x, nan.replace = FALSE)
 Compute (simple net) return of values in vector
 }
 \examples{
+  require(zoo)
   get_return(c(NA))
   get_return(c(NA, NA))
   get_return(c(NaN, NA))
