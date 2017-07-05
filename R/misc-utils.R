@@ -244,3 +244,33 @@ function(tickers, 		# Bloomberg ticker symbols
 #'
 #' @export
 `%not.in%`<- Negate(`%in%`)
+
+
+#' Checks for even / odd number
+#'
+#' Checks for even / odd number
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{\%\%}}
+#'
+#' @seealso \code{\link{\%\%}}
+#'
+#' @examples
+#'   is_even(1:10)
+#'   is_odd(1:10)
+#'
+#' @export
+#' @name is_even
+`is_even`<- function(x) {
+	assert(is.numeric(x) | is.integer(x))
+
+	!x %% 2
+}
+
+
+#' @export
+#' @rdname is_even
+`is_odd`<- function(x) {
+	!is_even(x)
+}
