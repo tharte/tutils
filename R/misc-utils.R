@@ -209,3 +209,19 @@ function(tickers, 		# Bloomberg ticker symbols
 	if (length(file)) save_zoo(z, file=file)
 	return(z[-which(index(z)==remove.date),])
 }
+
+#' asserts that the condition(s) is true
+#'
+#' asserts that the condition(s) is true
+#'
+#' @author Thomas P. Harte (inspired by the Rev Miguel Weylandto)
+#'
+#' @keywords \code{\link{stopifnot}}
+#'
+#' @seealso \code{\link{stopifnot}}
+#'
+#' @examples
+#'   assert(is.data.frame(data.frame()))
+#'
+#' @export
+`assert`<- base::stopifnot

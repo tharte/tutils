@@ -8,3 +8,11 @@ test_that("'top_dir' works", {
 #  )
 
 })
+
+
+test_that("'assert' works", {
+    expect_identical(
+        assert(is.data.frame(data.frame())),
+        invisible()
+    )
+})
