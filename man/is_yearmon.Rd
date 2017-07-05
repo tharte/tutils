@@ -16,7 +16,6 @@ is_yearmon(x)
 Check if the object is of class \code{\link{yearmon}}
 }
 \examples{
-  require(zoo)
   is_yearmon(as.yearmon("2017-07-04"))
   is_yearmon("2017-07-04")
 

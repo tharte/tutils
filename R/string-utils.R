@@ -139,6 +139,8 @@ function(str) {
 #'
 #' @examples
 #'   is_blank("")
+#'   is_blank(rep("",4))
+#'   is_blank(c("hello",rep("",4)))
 #'
 #' @export
 `is_blank`<- function(x) {

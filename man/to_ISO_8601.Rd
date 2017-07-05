@@ -22,9 +22,6 @@ convention for writing dates, viz. MM-DD-YYYY}
 Coerce character strings to Date class by judiciously guessing the strings' format
 }
 \examples{
-   require(zoo)
-   require(magrittr)
-   require(dplyr)
    tab<-  tutils:::make_ISO_8601_test_table()
    tab \%<>\% mutate(`Output`=as.character(NA))
 

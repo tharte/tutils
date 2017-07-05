@@ -16,7 +16,6 @@ is_Date(x)
 Check if the object is of class \code{\link{Date}}
 }
 \examples{
-  require(zoo)
   is_Date(as.Date("2017-07-04"))
   is_Date("2017-07-04")
 

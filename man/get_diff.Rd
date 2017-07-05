@@ -16,7 +16,6 @@ get_diff(x)
 Compute the difference of values in vector
 }
 \examples{
-  require(zoo)
   get_diff(c(NA))
   get_diff(c(NA, NA))
   get_diff(c(NaN, NA))

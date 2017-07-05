@@ -17,6 +17,8 @@ checks if a string is blank
 }
 \examples{
   is_blank("")
+  is_blank(rep("",4))
+  is_blank(c("hello",rep("",4)))
 
 }
 \seealso{

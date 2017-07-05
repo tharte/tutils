@@ -18,7 +18,6 @@ get_return(x, nan.replace = FALSE)
 Compute (simple net) return of values in vector
 }
 \examples{
-  require(zoo)
   get_return(c(NA))
   get_return(c(NA, NA))
   get_return(c(NaN, NA))
@@ -32,7 +31,7 @@ Compute (simple net) return of values in vector
   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
   #	  NA        1.0        0.5       -1.0         NA
 
-  zoo::rollapply(z, 2, get.return, align="right", nan.replace=FALSE)
+  zoo::rollapply(z, 2, get_return, align="right", nan.replace=FALSE)
   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
   #	  NA        1.0        0.5       -1.0         NaN
 

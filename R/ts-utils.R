@@ -13,7 +13,6 @@
 #' @seealso \code{\link{Date}}
 #'
 #' @examples
-#'   require(zoo)
 #'   is_Date(as.Date("2017-07-04"))
 #'   is_Date("2017-07-04")
 #'
@@ -43,7 +42,6 @@
 #' @seealso \code{\link{yearmon}}
 #'
 #' @examples
-#'   require(zoo)
 #'   is_yearmon(as.yearmon("2017-07-04"))
 #'   is_yearmon("2017-07-04")
 #'
@@ -74,7 +72,6 @@
 #' @seealso \code{\link{numeric}}, \code{\link{NaN}}, \code{\link{vector}}
 #'
 #' @examples
-#'   require(zoo)
 #'   get_return(c(NA))
 #'   get_return(c(NA, NA))
 #'   get_return(c(NaN, NA))
@@ -88,7 +85,7 @@
 #'   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
 #'   #	  NA        1.0        0.5       -1.0         NA
 #'
-#'   zoo::rollapply(z, 2, get.return, align="right", nan.replace=FALSE)
+#'   zoo::rollapply(z, 2, get_return, align="right", nan.replace=FALSE)
 #'   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
 #'   #	  NA        1.0        0.5       -1.0         NaN
 #'
@@ -138,7 +135,6 @@
 #' @seealso \code{\link{numeric}}, \code{\link{diff}}
 #'
 #' @examples
-#'   require(zoo)
 #'   get_diff(c(NA))
 #'   get_diff(c(NA, NA))
 #'   get_diff(c(NaN, NA))
@@ -188,9 +184,6 @@
 #' @seealso \code{\link{Date}}, \url{https://xkcd.com/1179}
 #'
 #' @examples
-#'    require(zoo)
-#'    require(magrittr)
-#'    require(dplyr)
 #'    tab<-  tutils:::make_ISO_8601_test_table()
 #'    tab %<>% mutate(`Output`=as.character(NA))
 #'
@@ -756,7 +749,7 @@
     }
     # tab<- ISO_8601_to_expected_for_class(tab)
     tab %<>% ISO_8601_to_character_expected_per_class()
-    stopifnot(!any(is.na(tab)))
+    assert(all(!is.na(tab)))
 
     year.left<-     as.logical(tab[, "year.left"])
     american<-      as.logical(tab[, "american"])
