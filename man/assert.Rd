@@ -2,12 +2,12 @@
 % Please edit documentation in R/misc-utils.R
 \name{assert}
 \alias{assert}
-\title{asserts that the condition(s) is true}
+\title{Asserts that the condition(s) is true}
 \usage{
 assert(...)
 }
 \description{
-asserts that the condition(s) is true
+Asserts that the condition(s) is true
 }
 \examples{
   assert(is.data.frame(data.frame()))

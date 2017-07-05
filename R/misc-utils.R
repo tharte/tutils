@@ -210,9 +210,9 @@ function(tickers, 		# Bloomberg ticker symbols
 	return(z[-which(index(z)==remove.date),])
 }
 
-#' asserts that the condition(s) is true
+#' Asserts that the condition(s) is true
 #'
-#' asserts that the condition(s) is true
+#' Asserts that the condition(s) is true
 #'
 #' @author Thomas P. Harte (inspired by the Rev Miguel Weylandto)
 #'
@@ -225,3 +225,22 @@ function(tickers, 		# Bloomberg ticker symbols
 #'
 #' @export
 `assert`<- base::stopifnot
+
+
+#' Negates \code{\link{\%in\%}}
+#'
+#' Negates \code{\link{\%in\%}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{\%in\%}}, \code{\link{Negate}}
+#'
+#' @seealso \code{\link{\%in\%}}, \code{\link{Negate}}
+#'
+#' @examples
+#'   assert("a" %not.in% letters[2:length(letters)])
+#'   "a" %not.in% letters[2:length(letters)]
+#'   "a" %not.in% letters
+#'
+#' @export
+`%not.in%`<- Negate(`%in%`)

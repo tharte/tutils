@@ -16,3 +16,15 @@ test_that("'assert' works", {
         invisible()
     )
 })
+
+
+test_that("'%not.in%' works", {
+    expect_identical(
+        assert("a" %not.in% letters[2:length(letters)]),
+        invisible()
+    )
+
+    expect_true("a" %not.in% letters[2:length(letters)])
+    expect_false("a" %not.in% letters)
+
+})
