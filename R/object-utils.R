@@ -1179,3 +1179,41 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 
     out
 }
+
+
+#' Cumulative set functions
+#'
+#' Cumulative set functions
+#'
+#' @param  x \code{list} containing objects to which \code{\link{intersect}} can be applied
+#'
+#' @return intersection of \code{list} objects
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{intersect}}, \code{\link{Reduce}}
+#'
+#' @seealso \code{\link{intersect}}, \code{\link{Reduce}}
+#'
+#' @examples
+#'   sets<- list(
+#'       1:3,
+#'       2:4,
+#'       3:5
+#'   )
+#'
+#'   unlist(last(Intersect(sets)))
+#'   unlist(last(Union(sets)))
+#'
+#' @export
+#' @name set_fns
+`Intersect`<- function(x) {
+    Reduce("intersect", x, accumulate=TRUE)
+}
+
+
+#' @export
+#' @rdname set_fns
+`Union`<-     function(x) {
+    Reduce("union", x, accumulate=TRUE)
+}

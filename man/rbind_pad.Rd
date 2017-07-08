@@ -2,7 +2,7 @@
 % Please edit documentation in R/object-utils.R
 \name{rbind_pad}
 \alias{rbind_pad}
-\title{A plausible alternative to plyr::rbind.fill which can be very memory intensive}
+\title{Alternative to \code{\link{plyr::rbind.fill}} which can be memory-intensive}
 \usage{
 rbind_pad(x, verbose = FALSE)
 }
@@ -15,7 +15,7 @@ rbind_pad(x, verbose = FALSE)
 \code{\link{data.frame}}
 }
 \description{
-A plausible alternative to plyr::rbind.fill which can be very memory intensive
+A plausible alternative to \code{\link{plyr::rbind.fill}}  which can be very memory-intensive
 }
 \examples{
   x<- list(

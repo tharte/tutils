@@ -347,6 +347,7 @@ test_that("'equal_tol' works", {
 
 })
 
+
 test_that("'rbind_pad' works", {
     x<- list(
         mtcars[c("mpg", "wt")],
@@ -366,5 +367,25 @@ warning("not yet fully implemented")
 
     rbind_pad(list(d0=d0, d1=d1))
 }
+
+})
+
+
+test_that("'Intersect','Union' works", {
+    sets<- list(
+        1:3,
+        2:4,
+        3:5
+    )
+
+    expect_equal(
+        unlist(last(Intersect(sets))),
+        3
+    )
+
+    expect_equal(
+        unlist(last(Union(sets))),
+        1:5
+    )
 
 })
