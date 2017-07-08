@@ -313,3 +313,115 @@ function(tickers, 		# Bloomberg ticker symbols
 
 	file.path(dirname(filename), basename(filename))
 }
+
+
+#' Use system \code{cut} (*NIX) only
+#'
+#' Use system \code{cut} (*NIX) only. For large files this is much faster
+#' than reading the file into R and cutting the columns.
+#'
+#' @param  cols \code{\link{integer}} \code{\link{vector}} index of columns to cut
+#' @param  filename \code{\link{character}} file name
+#' @param  sep \code{\link{character}} delimiter (passed to \code{cut})
+#'
+#' @return \code{\link{character}} \code{\link{vector}} output from \code{cut}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{system}}, \code{\link{cut}}
+#'
+#' @seealso \code{\link{system}}, \code{\link{cut}}
+#'
+#' @examples
+#'	tab<- read.csv(text='Name,Age,Salary,ID
+#'             Dick,38,32k,1
+#'             Tom,21,21k,2
+#'             Harry,56,NA,3',
+#'             header=TRUE,
+#'             stringsAsFactors=FALSE
+#'    )
+#'    for (col in which(col_classes(tab)=="character"))
+#'        tab[, col]<- tutils::trim(tab[, col])
+#'    tab
+#'
+#'    filename<- paste(tempfile(), ".csv", sep="")
+#'    write.csv(tab, file=filename, row.names=FALSE, quote=FALSE)
+#'    cut_system(1, filename, sep=",")
+#'    cut_system(4, filename, sep=",")
+#'    cut_system(c(1,4), filename, sep=",")
+#'    unlink(filename)
+#'
+#' @export
+`cut_system`<- function(cols, filename, sep="|") {
+    assert(
+        .Platform$OS.type=="unix",
+        is.integer(cols) | is.numeric(cols),
+        file.exists(filename)
+    )
+
+    cols<- ifelse(length(cols)>1,
+        paste(as.character(cols),collapse=","),
+        as.character(cols)
+    )
+
+    if (get_file_ext(filename)=="gz") {
+        command<- sprintf("gunzip -c %s | cut -f%s -d'%s'", filename, cols, sep)
+    }
+    else {
+        command<- sprintf("cut -f%s -d'%s' %s", cols, sep, filename)
+    }
+
+    system(command, intern=TRUE)
+}
+
+
+#' Use system \code{grep} (*NIX) only
+#'
+#' Use system \code{grep} (*NIX) only. For large files this is much faster
+#' than reading the file into R and grepping the columns.
+#'
+#' @param  pattern \code{\link{character}} to search
+#' @param  filename \code{\link{character}} file name
+#' @param  options \code{\link{character}} passed to \code{grep}
+#'
+#' @return \code{\link{character}} \code{\link{vector}} output from \code{cut}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{system}}, \code{\link{cut}}
+#'
+#' @seealso \code{\link{system}}, \code{\link{cut}}
+#'
+#' @examples
+#'	tab<- read.csv(text='Name,Age,Salary,ID
+#'             Dick,38,32k,1
+#'             Tom,21,21k,2
+#'             Harry,56,NA,3',
+#'             header=TRUE,
+#'             stringsAsFactors=FALSE
+#'    )
+#'    for (col in which(col_classes(tab)=="character"))
+#'        tab[, col]<- tutils::trim(tab[, col])
+#'    tab
+#'
+#'    filename<- paste(tempfile(), ".csv", sep="")
+#'    write.csv(tab, file=filename, row.names=FALSE, quote=FALSE)
+#'    grep_system("Tom", filename)
+#'    grep_system("Dick", filename)
+#'    grep_system("harry", filename, options="-i")
+#'
+#'    unlink(filename)
+#'
+#' @export
+`grep_system`<- function(pattern, filename, options="") {
+    assert(
+        .Platform$OS.type=="unix",
+        file.exists(filename)
+    )
+
+    pattern<- as.character(pattern)
+    .grep<-   ifelse(get_file_ext(filename)=="gz", "zgrep", "grep")
+    command<- sprintf("%s %s '%s' %s", .grep, options, pattern, filename)
+
+    system(command, intern=TRUE)
+}

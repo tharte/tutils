@@ -58,3 +58,71 @@ test_that("'absolute_path' works", {
 	}
 
 })
+
+
+test_that("'cut_system' works", {
+	tab<- read.csv(text='Name,Age,Salary,ID
+             Dick,38,32k,1
+             Tom,21,21k,2
+             Harry,56,NA,3',
+             header=TRUE,
+             stringsAsFactors=FALSE
+    )
+    for (col in which(col_classes(tab)=="character"))
+        tab[, col]<- tutils::trim(tab[, col])
+
+    filename<- paste(tempfile(), ".csv", sep="")
+    write.csv(tab, file=filename, row.names=FALSE, quote=FALSE)
+
+    expect_equal(
+        cut_system(1, filename, sep=","),
+        c("Name","Dick","Tom","Harry")
+    )
+
+    expect_equal(
+        cut_system(4, filename, sep=","),
+        c("ID","1","2","3")
+    )
+
+    expect_equal(
+        cut_system(c(1,4), filename, sep=","),
+        c("Name,ID","Dick,1","Tom,2","Harry,3")
+    )
+
+    unlink(filename)
+
+})
+
+
+test_that("'grep_system' works", {
+	tab<- read.csv(text='Name,Age,Salary,ID
+             Dick,38,32k,1
+             Tom,21,21k,2
+             Harry,56,NA,3',
+             header=TRUE,
+             stringsAsFactors=FALSE
+    )
+    for (col in which(col_classes(tab)=="character"))
+        tab[, col]<- tutils::trim(tab[, col])
+
+    filename<- paste(tempfile(), ".csv", sep="")
+    write.csv(tab, file=filename, row.names=FALSE, quote=FALSE)
+
+    expect_equal(
+        grep_system("Tom", filename),
+        "Tom,21,21k,2"
+    )
+
+    expect_equal(
+        grep_system("Dick", filename),
+        "Dick,38,32k,1"
+    )
+
+    expect_equal(
+        grep_system("harry", filename, options="-i"),
+        "Harry,56,NA,3"
+    )
+
+    unlink(filename)
+
+})
