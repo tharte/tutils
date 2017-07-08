@@ -1,5 +1,6 @@
 context("Object utilities ['object-utils.R']")
 
+require(plyr)
 require(magrittr)
 require(dplyr)
 
@@ -342,6 +343,19 @@ test_that("'equal_tol' works", {
 
 	expect_true(
         all(equal_tol(x, y, tol=0.1, each=TRUE, na.rm=TRUE))
+    )
+
+})
+
+test_that("'rbind_pad' works", {
+    x<- list(
+        mtcars[c("mpg", "wt")],
+        mtcars[c("wt", "cyl")]
+    )
+
+    expect_equal(
+        rbind_pad(x),
+        plyr::rbind.fill(x)
     )
 
 })

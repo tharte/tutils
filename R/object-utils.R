@@ -1095,3 +1095,87 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 
     out
 }
+
+
+#' A plausible alternative to plyr::rbind.fill which can be very memory intensive
+#'
+#' A plausible alternative to plyr::rbind.fill which can be very memory intensive
+#'
+#' @param  x \code{\link{list}} of objects inheriting from \code{\link{data.frame}}
+#' @param  verbose \code{\link{logical}} print output information
+#'
+#' @return \code{\link{data.frame}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{plyr::rbind.fill}}
+#'
+#' @seealso \code{\link{plyr::rbind.fill}}
+#'
+#' @examples
+#'   x<- list(
+#'        mtcars[c("mpg", "wt")],
+#'        mtcars[c("wt", "cyl")]
+#'   )
+#'
+#'   rbind_pad(x)
+#'   plyr::rbind.fill(x)
+#'
+#' @export
+`rbind_pad`<- function(x, verbose=FALSE) {
+    assert(
+        is.list(x),
+        all(sapply(x, inherits, "data.frame"))
+    )
+
+    `make.padded.data.frame`<- function(x) {
+        # get a list of colnames and atomic classes
+        lapply(x, function(x) {
+            if (any(is.na(colnames(x)) | is_blank(colnames(x))))
+                stop("all colnames not named")
+        })-> junk
+        d<- do.call("rbind", lapply(x, function(x) {
+            data.frame(colname=names(col_classes(x)),
+                            colClass=col_classes(x),
+                            stringsAsFactors=FALSE
+            )
+        }))
+
+        # ensure that each unique colname has only one associated class
+        sapply(unique(d$colname), function(nm) {
+               if (length(unique(d$colClass[match(nm, d$colname)]))!=1) {
+                   stop(sprintf("problem with '%s' - multiple classes found: '%s'\n",
+                                nm, paste(d$colClass[match(nm, d$colClass)], collapse=", ")))
+               }
+        })-> junk
+
+        d<- d[match(unique(d$colname), d$colname), ]
+
+        # clever way of setting up a data.frame with zero rows and column classes prespecified
+        #     http://stackoverflow.com/questions/10689055/create-an-empty-data-frame
+        read.table(text="",
+                   colClasses=d$colClass,
+                   col.names=d$colname,
+                   stringsAsFactors=FALSE,
+                   check.names=FALSE
+        )
+    }
+    DF<- make.padded.data.frame(x)
+
+    # preallocate data.frame
+    nrow.total<-          sum(sapply(x, nrow))
+    out<-                 DF
+    out[1:nrow.total, ]<- rep(NA, ncol(DF))
+
+    end<-   0
+    for (i in 1:length(x)) {
+        if (nrow(x[[i]])==0)
+            next
+        start<- end+1
+        end<-   start+nrow(x[[i]])-1
+        if (verbose) cat(sprintf("doing %s\n", ifelse(is.null(names(x)), i, names(x)[i])))
+        out[start:end, match(colnames(x[[i]]), colnames(DF))]<- x[[i]]
+    }
+
+    out
+}
