@@ -244,3 +244,56 @@ test_that("'match_col' works", {
 	expect_true(all.equal(match_col("k", tab, ROW.FUN=tutils::last, COL.FUN=tutils::last), result))	# <- NOTE: testing for "k"
 
 })
+
+
+test_that("'remove_from' works", {
+	FUN<- function(x) is_blank(x) | is.na(x)
+
+	tab<- read.table(con<- textConnection(
+	"Name  Age Salary
+	 Dick   NA    32k
+	 Tom    NA    21k
+	 NA     NA    NA"
+	), header=TRUE, colClasses=c("character","integer","character")); close(con)
+
+
+	row.clean<- read.table(con<- textConnection(
+	"Name  Age Salary
+	 Dick   NA    32k
+	 Tom    NA    21k"
+	), header=TRUE, colClasses=c("character","integer","character")); close(con)
+	expect_equal(
+        remove_from_rows(tab, fun=FUN),
+        row.clean
+    )
+	expect_equal(
+        remove_from(tab, fun=FUN, dim="row"),
+        row.clean
+    )
+
+	col.clean<- read.table(con<- textConnection(
+	"Name  Salary
+	 Dick  32k
+	 Tom   21k
+	 NA    NA"
+	), header=TRUE, colClasses=c("character","character")); close(con)
+	expect_equal(
+        remove_from_cols(tab, fun=FUN),
+        col.clean
+    )
+	expect_equal(
+        remove_from(tab, fun=FUN, dim="col"),
+        col.clean
+    )
+
+	both.clean<- read.table(con<- textConnection(
+	"Name  Salary
+	 Dick  32k
+	 Tom   21k"
+	), header=TRUE, colClasses=c("character","character")); close(con)
+	expect_equal(
+        remove_from(tab, fun=FUN, dim="both"),
+        both.clean
+    )
+
+})

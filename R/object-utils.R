@@ -885,3 +885,94 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 
 	return(out)
 }
+
+
+#' Remove all columns or rows from \code{\link{data.frame}} matching criterion
+#'
+#' Remove all columns or rows from \code{\link{data.frame}} matching criterion
+#'
+#' @param  DF \code{\link{data.frame}} or  \code{\link{matrix}}
+#' @param  fun \code{\link{function}} with criterion for removal
+#'
+#' @return \code{\link{data.frame}} or \code{\link{matrix}} with matching removed
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{grep}}, \code{\link{match}}
+#'
+#' @seealso \code{\link{grep}}, \code{\link{match}}
+#'
+#' @examples
+#'	FUN<- function(x) is_blank(x) | is.na(x)
+#'
+#'	tab<- read.table(con<- textConnection(
+#'	"Name  Age Salary
+#'	 Dick   NA    32k
+#'	 Tom    NA    21k
+#'	 NA     NA    NA"
+#'	), header=TRUE, colClasses=c("character","integer","character")); close(con)
+#'
+#'
+#'  remove_from_rows(tab, fun=FUN)
+#'  remove_from(tab, fun=FUN, dim="row")
+#'
+#'  remove_from_cols(tab, fun=FUN)
+#'  remove_from(tab, fun=FUN, dim="col")
+#'
+#'  remove_from(tab, fun=FUN, dim="both")
+#'
+#' @export
+#' @name remove_from
+`remove_from`<- function(DF, fun, dim=c("both","rows","cols")) {
+	assert(
+        inherits(DF, "data.frame") | is.matrix(DF),
+        is.function(fun)
+    )
+	dim<- match.arg(dim)
+
+	switch(dim,
+		both    = {
+			DF<- remove_from_rows(remove_from_cols(DF, fun), fun)
+		},
+		rows    = {
+			DF<- remove_from_rows(DF, fun)
+		},
+		cols = {
+			DF<- remove_from_cols(DF, fun)
+		}
+	)
+
+    DF
+}
+
+
+#' @export
+#' @rdname remove_from
+`remove_from_rows`<- function(DF, fun) {
+	assert(
+        inherits(DF, "data.frame") | is.matrix(DF),
+        is.function(fun)
+    )
+
+    rm.ix<- which(apply(fun(DF), 1, sum)==ncol(DF))
+    if (length(rm.ix))
+        DF<- DF[-rm.ix, ]
+
+    DF
+}
+
+
+#' @export
+#' @rdname remove_from
+`remove_from_cols`<- function(DF, fun) {
+	assert(
+        inherits(DF, "data.frame") | is.matrix(DF),
+        is.function(fun)
+    )
+
+    rm.ix<- which(apply(fun(DF), 2, sum)==nrow(DF))
+    if (length(rm.ix))
+        DF<- DF[, -rm.ix]
+
+    DF
+}
