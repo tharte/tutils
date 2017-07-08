@@ -976,3 +976,60 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 
     DF
 }
+
+
+#' Re-order named columns to front or back of \code{\link{data.frame}}
+#'
+#' Re-order named columns to front or back of \code{\link{data.frame}}
+#'
+#' @param  x \code{\link{data.frame}}
+#' @param  cn \code{\link{character}} \code{\link{vector}} of column names
+#'
+#' @return \code{\link{data.frame}} with re-ordered columns
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{data.frame}}, \code{\link{dplyr::everything}}
+#'
+#' @seealso \code{\link{data.frame}}, \code{\link{dplyr::everything}},
+#'   \url{http://stackoverflow.com/questions/27865865/in-dplyr-how-to-delete-and-rename-columns-that-dont-exist-manipulate-all-name}
+#'
+#' @examples
+#'	tab<- read.table(
+#'        con<- textConnection(
+#'            "Name    Age Salary ID
+#'             Dick     38    32k  1
+#'             Tom      21    21k  2
+#'             Harry    56     NA  3"
+#'        ),
+#'        header=TRUE,
+#'        colClasses=c("character","integer","character","integer")
+#'    )
+#'    close(con)
+#'  tab
+#'
+#'  tab %>% order_cn_front(c("Salary","Age"))
+#'  tab %>% order_cn_back(c("Salary","Age"))
+#'
+#' @export
+#' @name order_cn
+`order_cn_front`<- function(x, cn) {
+    assert(
+        inherits(x, "data.frame"),
+        cn %in% (orig.cn<- colnames(x))
+    )
+
+    x %>% select(one_of(c(cn, setdiff(orig.cn, cn))))
+}
+
+
+#' @export
+#' @rdname order_cn
+`order_cn_back`<- function(x, cn) {
+    assert(
+        inherits(x, "data.frame"),
+        cn %in% (orig.cn<- colnames(x))
+    )
+
+    x %>% select(one_of(c(setdiff(orig.cn, cn), cn)))
+}

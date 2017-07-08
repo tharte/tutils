@@ -1,5 +1,8 @@
 context("Object utilities ['object-utils.R']")
 
+require(magrittr)
+require(dplyr)
+
 test_that("'first','last' work", {
 
     str<- paste(c(
@@ -294,6 +297,32 @@ test_that("'remove_from' works", {
 	expect_equal(
         remove_from(tab, fun=FUN, dim="both"),
         both.clean
+    )
+
+})
+
+
+test_that("'order_cn_front, order_cn_back' works", {
+	tab<- read.table(
+        con<- textConnection(
+            "Name    Age Salary ID
+             Dick     38    32k  1
+             Tom      21    21k  2
+             Harry    56     NA  3"
+        ),
+        header=TRUE,
+        colClasses=c("character","integer","character","integer")
+    )
+    close(con)
+
+	expect_equal(
+        tab %>% order_cn_front(c("Salary","Age")),
+        tab[, c(3,2,1,4)]
+    )
+
+	expect_equal(
+        tab %>% order_cn_back(c("Salary","Age")),
+        tab[, c(1,4,3,2)]
     )
 
 })
