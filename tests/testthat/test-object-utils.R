@@ -326,3 +326,22 @@ test_that("'order_cn_front, order_cn_back' works", {
     )
 
 })
+
+
+test_that("'equal_tol' works", {
+    x<- c(NA, 1:10)
+    set.seed(1)
+    y<- x + rnorm(length(x), sd=.01)
+	expect_true(
+        equal_tol(x, y, tol=0.1, na.rm=TRUE)
+    )
+
+	expect_true(
+        equal_tol(x, y, tol=0.1, pct=TRUE, na.rm=TRUE)
+    )
+
+	expect_true(
+        all(equal_tol(x, y, tol=0.1, each=TRUE, na.rm=TRUE))
+    )
+
+})

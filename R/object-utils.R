@@ -1033,3 +1033,65 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 
     x %>% select(one_of(c(setdiff(orig.cn, cn), cn)))
 }
+
+
+#' Check that objects are equal to within some numerical tolerance
+#'
+#' Check that objects are equal to within some numerical tolerance
+#'
+#' @param  x \code{\link{vector}}
+#' @param  y \code{\link{vector}}
+#' @param  tol \code{\link{numeric}} tolerance
+#' @param  pct \code{\link{logical}} tolerance is a percentage of mean
+#' @param  each \code{\link{logical}} returns element-by-element comparison, if \code{TRUE}
+#' @param  na.rm \code{\link{logical}} remove NAs, if \code{TRUE}
+#'
+#' @return \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{mean}}
+#'
+#' @seealso \code{\link{mean}}
+#'
+#' @examples
+#'    x<- c(NA, 1:10)
+#'    set.seed(1)
+#'    y<- x + rnorm(length(x), sd=.01)
+#'    cbind(x, y)
+#'
+#'    equal_tol(x, y, tol=0.1, na.rm=TRUE)
+#'    equal_tol(x, y, tol=0.1, pct=TRUE, na.rm=TRUE)
+#'    equal_tol(x, y, tol=0.1, each=TRUE, na.rm=TRUE)
+#'    all(equal_tol(x, y, tol=0.1, each=TRUE, na.rm=TRUE))
+#'
+#' @export
+`equal_tol`<- function(x, y, tol=1, pct=FALSE, each=FALSE, na.rm=FALSE) {
+    # Might be unpredictable if x and y aren't simple numeric vectors
+    assert(length(x) == length(y))
+
+    if (na.rm) {
+        rm.ix<- is.na(x) | is.na(y)
+        x<- x[!rm.ix]
+        y<- y[!rm.ix]
+    }
+    else{
+        if (any(is.na(x), is.na(y)))
+            stop("NAs found")
+    }
+
+    if (pct) {
+        assert(tol >= 0)
+        compar<- abs(x - y) / abs(mean(c(x,y)))
+    }
+    else {
+        compar<- abs(x - y)
+    }
+
+    if (each)
+        out<- compar < tol
+    else
+        out<- all(compar < tol)
+
+    out
+}
