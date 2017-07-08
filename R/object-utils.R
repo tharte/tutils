@@ -1097,9 +1097,9 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 }
 
 
-#' A plausible alternative to plyr::rbind.fill which can be very memory intensive
+#' Alternative to \code{\link{plyr::rbind.fill}} which can be memory-intensive
 #'
-#' A plausible alternative to plyr::rbind.fill which can be very memory intensive
+#' A plausible alternative to \code{\link{plyr::rbind.fill}}  which can be very memory-intensive
 #'
 #' @param  x \code{\link{list}} of objects inheriting from \code{\link{data.frame}}
 #' @param  verbose \code{\link{logical}} print output information

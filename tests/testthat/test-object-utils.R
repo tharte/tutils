@@ -358,4 +358,13 @@ test_that("'rbind_pad' works", {
         plyr::rbind.fill(x)
     )
 
+if (0) {
+warning("not yet fully implemented")
+    L3<- LETTERS[1:3]
+    d0<- data.frame(cbind(int.1=1, int.2=1:10), fac=sample(L3, 10, replace=TRUE))
+    d1<- data.frame(int.2=11:15, num=rnorm(5), date=seq(as.Date("2014-12-01"), by=1, len=5))
+
+    rbind_pad(list(d0=d0, d1=d1))
+}
+
 })
