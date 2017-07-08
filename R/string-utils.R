@@ -144,7 +144,7 @@ function(str) {
 #'
 #' @export
 `is_blank`<- function(x) {
-    assert(is.character(x))
+    # assert(is.character(x))
 
 	all(x == "")
 }
