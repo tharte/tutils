@@ -37,3 +37,24 @@ test_that("'is_even', 'is_odd' work", {
     expect_false(is_odd(2))
 
 })
+
+
+test_that("'absolute_path' works", {
+	if (.Platform$OS.type=="windows") {
+		filename<- "u:/foo/bar.csv"
+		expect_equal(absolute_path(filename), filename)
+	}
+	else if (.Platform$OS.type=="unix") {
+		filename<- "~/foo/bar.csv"
+
+		### something of a circular test:
+		expect_equal(
+            absolute_path(filename),
+            gsub("~", file.path(dirname("~"), basename("~")), filename)
+        )
+	}
+	else {
+		warning(sprintf("%s not recognized", .Platform$OS.type))
+	}
+
+})

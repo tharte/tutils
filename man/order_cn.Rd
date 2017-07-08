@@ -33,6 +33,7 @@ tab<- read.table(
        colClasses=c("character","integer","character","integer")
    )
    close(con)
+ tab
 
  tab \%>\% order_cn_front(c("Salary","Age"))
  tab \%>\% order_cn_back(c("Salary","Age"))

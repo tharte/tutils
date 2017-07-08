@@ -274,3 +274,42 @@ function(tickers, 		# Bloomberg ticker symbols
 `is_odd`<- function(x) {
 	!is_even(x)
 }
+
+
+#' Get the absolute path of a file name
+#'
+#' Get the absolute path of a file name
+#'
+#' @param  filename \code{\link{character}} string - file name
+#'
+#' @return \code{\link{character}} string - absolute path of file name
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{path}}, \code{\link{dirname}}, \code{\link{basename}}
+#'
+#' @seealso \code{\link{path}}, \code{\link{dirname}}, \code{\link{basename}}
+#'
+#' @examples
+#'   make_filename<- function() {
+#'       if (.Platform$OS.type=="windows") {
+#'           filename<- "u:/foo/bar.csv"
+#'       }
+#'       else if (.Platform$OS.type=="unix") {
+#'           filename<- "~/foo/bar.csv"
+#'       }
+#'       else {
+#'           stop(sprintf("%s not recognized", .Platform$OS.type))
+#'       }
+#'
+#'       filename
+#'   }
+#'   (filename<- make_filename())
+#'   absolute_path(filename)
+#'
+#' @export
+`absolute_path`<- function(filename) {
+	### works on .Platform$OS.type=="unix" & .Platform$OS.type=="windows" too
+
+	file.path(dirname(filename), basename(filename))
+}
