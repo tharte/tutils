@@ -1217,3 +1217,53 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 `Union`<-     function(x) {
     Reduce("union", x, accumulate=TRUE)
 }
+
+
+#' Bind an object to an environment
+#'
+#' Bind an object to an \code{\link{environment}}. If the object is a
+#' \code{\link{function}} then the environment of the
+#' \code{\link{function}} is also set to the \code{\link{environment}}.
+#'
+#' @param  object of any type
+#' @param  envir \code{\link{environment}} to which to bind \code{object}
+#'
+#' @return \code{\link{invisible}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{environment}}, \code{\link{function}}
+#'
+#' @seealso \code{\link{environment}}, \code{\link{function}}
+#'
+#' @examples
+#'    e<- new.env()
+#'
+#'    x<- 1:3
+#'    `fun`<- function() {
+#'        x
+#'    }
+#'
+#'    bind_to_env(x, env=e)
+#'    bind_to_env(fun, env=e)
+#'    x<- 1:10
+#'
+#'    all.equal(
+#'        fun(), 1:10
+#'    )
+#'
+#'    whos(sort="Name", env=e, omit=NULL)
+#'
+#' @export
+`bind_to_env`<- function(object, envir) {
+    assert(is.environment(envir))
+
+    nm<- as.character(substitute(object))
+    assign(nm, object, env=envir)
+    if (is.function(object))
+		environment(envir[[nm]])<- as.environment(envir)
+
+    invisible()
+}
+
+

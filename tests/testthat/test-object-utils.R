@@ -385,3 +385,23 @@ test_that("'Intersect','Union' works", {
     )
 
 })
+
+
+test_that("'bind_to_env' works", {
+    e<- new.env()
+
+    x<- 1:3
+    `fun`<- function() {
+        x
+    }
+
+    bind_to_env(x, env=e)
+    bind_to_env(fun, env=e)
+    x<- 1:10
+
+    expect_equal(
+        fun(), 1:10
+    )
+
+    whos(sort="Name", env=e, omit=NULL)
+})

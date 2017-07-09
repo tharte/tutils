@@ -15,7 +15,8 @@ is_whitespace(x)
   \code{\link{vector}} with entries of mode \code{\link{logical}}
 }
 \description{
-Finds strings that are purely whitespace (note: not strings that \emph{contain} whitespace)
+Finds strings that consist purely of whitespace (note: not merely strings
+that \emph{contain} whitespace)
 }
 \examples{
    tab<- read.table(text='Name| Age|Salary|ID
