@@ -97,9 +97,9 @@ test_that("'is_blank' works", {
 
 test_that("'is_not_applicable' works", {
     tab<- read.table(text='Name| Age|Salary|ID
-            Bill| NA|32k|1
+             Tom| NA|32k|1
              N/A| NA|21k|2
-             Tom| NA|NA|N/A',
+             Harry| NA|NA|N/A',
             header=TRUE,
             sep="|",
             colClasses=c("character","integer","character")
@@ -124,6 +124,40 @@ test_that("'is_not_applicable' works", {
     expect_equal(
         res[, "ID"],
         c(FALSE, FALSE, TRUE)
+    )
+
+})
+
+
+test_that("'is_whitespace' works", {
+    tab<- read.table(text='Name| Age|Salary|ID
+             | |32k|1
+             N/A| NA|21k|2
+             Harry| NA|NA|NA',
+            header=TRUE,
+            sep="|",
+            colClasses=c("character","character","character","integer")
+        )
+    res<- is_whitespace(tab)
+
+    expect_equal(
+        res[, "Name"],
+        c(TRUE,FALSE,FALSE)
+    )
+
+    expect_equal(
+        res[, "Age"],
+        c(TRUE,FALSE,FALSE)
+    )
+
+    expect_equal(
+        res[, "Salary"],
+        c(FALSE, FALSE, NA)
+    )
+
+    expect_equal(
+        res[, "ID"],
+        c(FALSE, FALSE, NA)
     )
 
 })
