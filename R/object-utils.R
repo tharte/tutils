@@ -1267,3 +1267,46 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 }
 
 
+#' Open up a \code{\link{tibble}} (or similar) \code{\link{data.frame}}
+#'
+#' Open up a \code{\link{tibble}} (or similar) \code{\link{data.frame}}.
+#' Printing a \code{\link{tibble}} typically only displays a few rows
+#' of the table. \code{+} is used to open up the table fully, as if
+#' it were a \code{\link{data.frame}}.
+#'
+#' @param  e1 any object, or a \code{\link{data.frame}}
+#' @param  e2 any other object
+#'
+#' @return \code{\link{data.frame}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{data.frame}}, \code{\link{tibble}}, \code{\link{tbl_df}}
+#'
+#' @seealso \code{\link{data.frame}}, \code{\link{tibble}}, \code{\link{tbl_df}}
+#'
+#' @examples
+#' # mtcars is a regular data.frame
+#'   mtcars
+#'   mtcars %>% tbl_df
+#'   mtcars %>% tbl_df %>% `+`
+#'
+#' # with typical use as follows:
+#'   x<- mtcars %>% tbl_df
+#'   x
+#'   +x
+#'
+#' @export
+`+`<- function(e1, e2) {
+    if (is.data.frame(e1) && missing(e2)) {
+        as.data.frame(e1)
+    }
+    else {
+        if (missing(e2)) {
+            base::`+`(e1)
+        }
+        else {
+            base::`+`(e1, e2)
+        }
+    }
+}
