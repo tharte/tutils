@@ -1,11 +1,6 @@
 context("Object utilities ['object-utils.R']")
 
-require(plyr)
-require(magrittr)
-require(dplyr)
-
 test_that("'first','last' work", {
-
     str<- paste(c(
         "hello there",
         "how are you?"
@@ -23,8 +18,8 @@ test_that("'first','last' work", {
 
 })
 
-test_that("'copy' works", {
 
+test_that("'copy' works", {
     # NULL list:
     expect_equal(
         copy(list(), integer(0)),
@@ -67,6 +62,7 @@ test_that("'copy' works", {
     }
 
 })
+
 
 test_that("'push_back' works", {
     # zero-length list x: append zero-length object y:

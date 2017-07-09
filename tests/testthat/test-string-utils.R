@@ -11,6 +11,7 @@ test_that("'capitalize' works", {
 
 })
 
+
 test_that("'get_file_ext' works", {
   expect_equal(
       get_file_ext("foo.bar.csv"), "csv"
@@ -30,6 +31,7 @@ test_that("'get_file_ext' works", {
 
 })
 
+
 test_that("'triml' works", {
   expect_equal(
       triml(" asdf qwerty \t"), "asdf qwerty \t"
@@ -42,6 +44,7 @@ test_that("'triml' works", {
 
 })
 
+
 test_that("'trimr' works", {
   expect_equal(
       trimr(" asdf qwerty \t"), " asdf qwerty"
@@ -53,6 +56,7 @@ test_that("'trimr' works", {
 
 
 })
+
 
 test_that("'trim' works", {
   expect_equal(
@@ -73,6 +77,7 @@ test_that("'trim' works", {
 
 })
 
+
 test_that("'is_blank' works", {
   expect_true(
       is_blank("")
@@ -86,5 +91,39 @@ test_that("'is_blank' works", {
       is_blank(c("hello", rep("", 4)))
   )
 
+
+})
+
+
+test_that("'is_not_applicable' works", {
+    tab<- read.table(text='Name| Age|Salary|ID
+            Bill| NA|32k|1
+             N/A| NA|21k|2
+             Tom| NA|NA|N/A',
+            header=TRUE,
+            sep="|",
+            colClasses=c("character","integer","character")
+        )
+    res<- is_not_applicable(tab)
+
+    expect_equal(
+        res[, "Name"],
+        c(FALSE,TRUE,FALSE)
+    )
+
+    expect_equal(
+        res[, "Age"],
+        rep(as.logical(NA), 3)
+    )
+
+    expect_equal(
+        res[, "Salary"],
+        c(FALSE, FALSE, NA)
+    )
+
+    expect_equal(
+        res[, "ID"],
+        c(FALSE, FALSE, TRUE)
+    )
 
 })

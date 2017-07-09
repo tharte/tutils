@@ -148,3 +148,60 @@ function(str) {
 
 	all(x == "")
 }
+
+
+#' Finds strings matching N/A
+#'
+#' Description: What the function does in more detail
+#'
+#' @param  x \code{\link{character}} \code{\link{vector}}, or \code{\link{data.frame}}
+#'
+#' @return \code{\link{data.frame}} with same structure as \code{x}, but with
+#'   entries of mode \code{\link{logical}}, or \code{\link{character}}
+#'   \code{\link{vector}} with entries of mode \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{NA}}
+#'
+#' @seealso \code{\link{NA}}
+#'
+#' @examples
+#'    tab<- read.table(text='Name| Age|Salary|ID
+#'            Bill| NA|32k|1
+#'             N/A| NA|21k|2
+#'             Tom| NA|NA|N/A',
+#'            header=TRUE,
+#'            sep="|",
+#'            colClasses=c("character","integer","character")
+#'        )
+#'    tab
+#'    col_classes(tab)
+#'
+#'    res<- is_not_applicable(tab)
+#'    col_classes(res)
+#'
+#' @export
+`is_not_applicable`<- function(x) {
+    assert(
+        is.vector(x) |
+        is.data.frame(x) |
+        is.matrix(x)
+    )
+    `.is_not_applicable`<- function(x) {
+        if (is.character(x))
+            return(tutils::trim(x)=="N/A")
+        out<- logical(length(x))
+        out[is.na(x)]<- NA
+
+        out
+    }
+    if (is.data.frame(x)) {
+        x[]<- lapply(x, .is_not_applicable)
+    }
+    else if (is.vector(x)) {
+        x<- .is_not_applicable(x)
+    }
+
+    x
+}
