@@ -203,9 +203,9 @@ if (0) {
 	return(out)
 }
 
-#' appends an object to the back of a list
+#' Appends an object to the back of a list
 #'
-#' appends an object to the back of a list
+#' Appends an object to the back of a list
 #' @param  x \code{\link{list}} list of objects
 #' @param  y \code{\link{list}} list of objects to append to \code{x}
 #'
@@ -366,9 +366,10 @@ function(x, y) {
 	return(invisible())
 }
 
-#' copy object
+#' Put a variable(s) into a specified \code{\link{environment}}.
 #'
-#' copy a single variable from one environment to another environment
+#' Put a variable(s) into a specified \code{\link{environment}}, \emph{i.e.}
+#' copy a variable(s) from one environment to another environment
 #'
 #' @param var \code{\link{character}} name of variable in \code{from.envir} to copy
 #' @param from.envir \code{\link{environment}} where variable is to be copied from
@@ -396,9 +397,9 @@ function(x, y) {
 	return(invisible())
 }
 
-#' check for try-error
+#' Check for try-error
 #'
-#' checks to see if a try-error occurred
+#' Checks to see if a try-error occurred
 #'
 #'
 #' @param  x \code{\link{try}}
@@ -435,7 +436,7 @@ function(x, y) {
 
 #' Reload a single object written with the function save
 #'
-#' load_as reloads the contents of a single object that was saved in .Rdata format into the workspace
+#' \code{load_as} reloads the contents of a single object that was saved in .Rdata format into the workspace
 #'
 #' @param  file \code{\link{character}} file name of the stored object to reload
 #'
@@ -1181,9 +1182,9 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 }
 
 
-#' Cumulative set functions
+#' Cumulative set functions.
 #'
-#' Cumulative set functions
+#' Cumulative set functions.
 #'
 #' @param  x \code{list} containing objects to which \code{\link{intersect}} can be applied
 #'

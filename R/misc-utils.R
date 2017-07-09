@@ -84,9 +84,9 @@
 	return(.top.dir)
 }
 
-#' Get ticker from Bloomberg
+#' Get ticker from Bloomberg.
 #'
-#'	returns the selected tickers from Bloomberg
+#' Returns the selected tickers from Bloomberg
 #'
 #' @param  tickers \code{\link{character}} Bloomberg tickers to fetch
 #' @param  field \code{\link{character}} Bloomberg data field
