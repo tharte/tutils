@@ -4,7 +4,7 @@
 \alias{set_fns}
 \alias{Intersect}
 \alias{Union}
-\title{Cumulative set functions}
+\title{Cumulative set functions.}
 \usage{
 Intersect(x)
 
@@ -17,7 +17,7 @@ Union(x)
 intersection of \code{list} objects
 }
 \description{
-Cumulative set functions
+Cumulative set functions.
 }
 \examples{
   sets<- list(

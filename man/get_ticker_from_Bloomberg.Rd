@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc-utils.R
 \name{get_ticker_from_Bloomberg}
 \alias{get_ticker_from_Bloomberg}
-\title{Get ticker from Bloomberg}
+\title{Get ticker from Bloomberg.}
 \usage{
 get_ticker_from_Bloomberg(tickers, field = "PX_LAST", block = 5,
   start = NULL, end = Sys.Date(), file = character(0))
@@ -33,7 +33,7 @@ signals to fetch data to the latest date possible}
 \code{\link{zoo}}
 }
 \description{
-returns the selected tickers from Bloomberg
+Returns the selected tickers from Bloomberg
 }
 \examples{
   \dontrun{
