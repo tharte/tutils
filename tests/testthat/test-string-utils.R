@@ -160,4 +160,26 @@ test_that("'is_whitespace' works", {
         c(FALSE, FALSE, NA)
     )
 
+# FIXME: other tests to add???
+if (0) {
+	if (!all(is.whitespace(c(""," "," \t"))))
+		return(FALSE)
+
+        if (!all(na.omit(is.whitespace(c("  ", "\t", NA)))==na.omit(c(rep(TRUE,2),NA))))
+                      return(FALSE)
+
+        tab<- read.table(con<- textConnection(
+                "Name| Age|Salary
+                     |  NA|32k
+                   \t|  NA|21k
+                     |  NA|NA"
+        ), header=TRUE, sep="|", colClasses=c("character","integer","character")); close(con)
+        res<- apply(tab, 2, is.whitespace)
+
+        if (! ((all(res[,"Name"])==TRUE) & all(is.na(res[,"Age"])) & all(na.omit(res[,"Salary"])==FALSE)) )
+		return(FALSE)
+
+
+	return(TRUE)
+}
 })
