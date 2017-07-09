@@ -13,7 +13,7 @@ load_as(file)
 \code{\link{character}}
 }
 \description{
-load_as reloads the contents of a single object that was saved in .Rdata format into the workspace
+\code{load_as} reloads the contents of a single object that was saved in .Rdata format into the workspace
 }
 \examples{
 file<- paste(tempfile(), ".Rdata", sep="")

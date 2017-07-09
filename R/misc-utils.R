@@ -84,9 +84,9 @@
 	return(.top.dir)
 }
 
-#' Get ticker from Bloomberg
+#' Get ticker from Bloomberg.
 #'
-#'	returns the selected tickers from Bloomberg
+#' Returns the selected tickers from Bloomberg
 #'
 #' @param  tickers \code{\link{character}} Bloomberg tickers to fetch
 #' @param  field \code{\link{character}} Bloomberg data field
@@ -208,4 +208,220 @@ function(tickers, 		# Bloomberg ticker symbols
 	blpDisconnect(conn)
 	if (length(file)) save_zoo(z, file=file)
 	return(z[-which(index(z)==remove.date),])
+}
+
+#' Asserts that the condition(s) is true
+#'
+#' Asserts that the condition(s) is true
+#'
+#' @author Thomas P. Harte (inspired by the Rev Miguel Weylandto)
+#'
+#' @keywords \code{\link{stopifnot}}
+#'
+#' @seealso \code{\link{stopifnot}}
+#'
+#' @examples
+#'   assert(is.data.frame(data.frame()))
+#'
+#' @export
+`assert`<- base::stopifnot
+
+
+#' Negates \code{\link{\%in\%}}
+#'
+#' Negates \code{\link{\%in\%}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{\%in\%}}, \code{\link{Negate}}
+#'
+#' @seealso \code{\link{\%in\%}}, \code{\link{Negate}}
+#'
+#' @examples
+#'   assert("a" %not.in% letters[2:length(letters)])
+#'   "a" %not.in% letters[2:length(letters)]
+#'   "a" %not.in% letters
+#'
+#' @export
+`%not.in%`<- Negate(`%in%`)
+
+
+#' Checks for even / odd number
+#'
+#' Checks for even / odd number
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{\%\%}}
+#'
+#' @seealso \code{\link{\%\%}}
+#'
+#' @examples
+#'   is_even(1:10)
+#'   is_odd(1:10)
+#'
+#' @export
+#' @name is_even
+`is_even`<- function(x) {
+	assert(is.numeric(x) | is.integer(x))
+
+	!x %% 2
+}
+
+
+#' @export
+#' @rdname is_even
+`is_odd`<- function(x) {
+	!is_even(x)
+}
+
+
+#' Get the absolute path of a file name
+#'
+#' Get the absolute path of a file name
+#'
+#' @param  filename \code{\link{character}} string - file name
+#'
+#' @return \code{\link{character}} string - absolute path of file name
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{path}}, \code{\link{dirname}}, \code{\link{basename}}
+#'
+#' @seealso \code{\link{path}}, \code{\link{dirname}}, \code{\link{basename}}
+#'
+#' @examples
+#'   make_filename<- function() {
+#'       if (.Platform$OS.type=="windows") {
+#'           filename<- "u:/foo/bar.csv"
+#'       }
+#'       else if (.Platform$OS.type=="unix") {
+#'           filename<- "~/foo/bar.csv"
+#'       }
+#'       else {
+#'           stop(sprintf("%s not recognized", .Platform$OS.type))
+#'       }
+#'
+#'       filename
+#'   }
+#'   (filename<- make_filename())
+#'   absolute_path(filename)
+#'
+#' @export
+`absolute_path`<- function(filename) {
+	### works on .Platform$OS.type=="unix" & .Platform$OS.type=="windows" too
+
+	file.path(dirname(filename), basename(filename))
+}
+
+
+#' Use system \code{cut} (*NIX) only
+#'
+#' Use system \code{cut} (*NIX) only. For large files this is much faster
+#' than reading the file into R and cutting the columns.
+#'
+#' @param  cols \code{\link{integer}} \code{\link{vector}} index of columns to cut
+#' @param  filename \code{\link{character}} file name
+#' @param  sep \code{\link{character}} delimiter (passed to \code{cut})
+#'
+#' @return \code{\link{character}} \code{\link{vector}} output from \code{cut}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{system}}, \code{\link{cut}}
+#'
+#' @seealso \code{\link{system}}, \code{\link{cut}}
+#'
+#' @examples
+#'	tab<- read.csv(text='Name,Age,Salary,ID
+#'             Dick,38,32k,1
+#'             Tom,21,21k,2
+#'             Harry,56,NA,3',
+#'             header=TRUE,
+#'             stringsAsFactors=FALSE
+#'    )
+#'    for (col in which(col_classes(tab)=="character"))
+#'        tab[, col]<- tutils::trim(tab[, col])
+#'    tab
+#'
+#'    filename<- paste(tempfile(), ".csv", sep="")
+#'    write.csv(tab, file=filename, row.names=FALSE, quote=FALSE)
+#'    cut_system(1, filename, sep=",")
+#'    cut_system(4, filename, sep=",")
+#'    cut_system(c(1,4), filename, sep=",")
+#'    unlink(filename)
+#'
+#' @export
+`cut_system`<- function(cols, filename, sep="|") {
+    assert(
+        .Platform$OS.type=="unix",
+        is.integer(cols) | is.numeric(cols),
+        file.exists(filename)
+    )
+
+    cols<- ifelse(length(cols)>1,
+        paste(as.character(cols),collapse=","),
+        as.character(cols)
+    )
+
+    if (get_file_ext(filename)=="gz") {
+        command<- sprintf("gunzip -c %s | cut -f%s -d'%s'", filename, cols, sep)
+    }
+    else {
+        command<- sprintf("cut -f%s -d'%s' %s", cols, sep, filename)
+    }
+
+    system(command, intern=TRUE)
+}
+
+
+#' Use system \code{grep} (*NIX) only
+#'
+#' Use system \code{grep} (*NIX) only. For large files this is much faster
+#' than reading the file into R and grepping the columns.
+#'
+#' @param  pattern \code{\link{character}} to search
+#' @param  filename \code{\link{character}} file name
+#' @param  options \code{\link{character}} passed to \code{grep}
+#'
+#' @return \code{\link{character}} \code{\link{vector}} output from \code{cut}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{system}}, \code{\link{cut}}
+#'
+#' @seealso \code{\link{system}}, \code{\link{cut}}
+#'
+#' @examples
+#'	tab<- read.csv(text='Name,Age,Salary,ID
+#'             Dick,38,32k,1
+#'             Tom,21,21k,2
+#'             Harry,56,NA,3',
+#'             header=TRUE,
+#'             stringsAsFactors=FALSE
+#'    )
+#'    for (col in which(col_classes(tab)=="character"))
+#'        tab[, col]<- tutils::trim(tab[, col])
+#'    tab
+#'
+#'    filename<- paste(tempfile(), ".csv", sep="")
+#'    write.csv(tab, file=filename, row.names=FALSE, quote=FALSE)
+#'    grep_system("Tom", filename)
+#'    grep_system("Dick", filename)
+#'    grep_system("harry", filename, options="-i")
+#'
+#'    unlink(filename)
+#'
+#' @export
+`grep_system`<- function(pattern, filename, options="") {
+    assert(
+        .Platform$OS.type=="unix",
+        file.exists(filename)
+    )
+
+    pattern<- as.character(pattern)
+    .grep<-   ifelse(get_file_ext(filename)=="gz", "zgrep", "grep")
+    command<- sprintf("%s %s '%s' %s", .grep, options, pattern, filename)
+
+    system(command, intern=TRUE)
 }
