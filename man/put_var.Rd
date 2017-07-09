@@ -2,7 +2,7 @@
 % Please edit documentation in R/object-utils.R
 \name{put_var}
 \alias{put_var}
-\title{copy object}
+\title{Put a variable(s) into a specified \code{\link{environment}}.}
 \usage{
 put_var(var, from.envir = parent.frame(), to.envir = .GlobalEnv)
 }
@@ -17,7 +17,8 @@ put_var(var, from.envir = parent.frame(), to.envir = .GlobalEnv)
 \code{\link{invisible}}
 }
 \description{
-copy a single variable from one environment to another environment
+Put a variable(s) into a specified \code{\link{environment}}, \emph{i.e.}
+copy a variable(s) from one environment to another environment
 }
 \examples{
 	 e<- new.env()

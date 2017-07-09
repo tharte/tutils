@@ -121,3 +121,149 @@ function(str) {
 		stop("input must be of mode 'character'")
 	gsub('[[:space:]]+$', '', str)
 }
+
+
+#' checks if a string is blank
+#'
+#' checks if a string is blank
+#'
+#' @param  x \code{\link{character}} string to check
+#'
+#' @return \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{character}}
+#'
+#' @seealso \code{\link{character}}
+#'
+#' @examples
+#'   is_blank("")
+#'   is_blank(rep("",4))
+#'   is_blank(c("hello",rep("",4)))
+#'
+#' @export
+`is_blank`<- function(x) {
+    # assert(is.character(x))
+
+	all(x == "")
+}
+
+
+#' Finds strings matching N/A
+#'
+#' Finds strings matching N/A
+#'
+#' @param  x \code{\link{character}} \code{\link{vector}}, or \code{\link{data.frame}}
+#'
+#' @return \code{\link{data.frame}} with same structure as \code{x}, but with
+#'   entries of mode \code{\link{logical}}, or \code{\link{character}}
+#'   \code{\link{vector}} with entries of mode \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{NA}}
+#'
+#' @seealso \code{\link{NA}}
+#'
+#' @examples
+#'    tab<- read.table(text='Name| Age|Salary|ID
+#'             Tom| NA|32k|1
+#'             N/A| NA|21k|2
+#'             Harry| NA|NA|N/A',
+#'            header=TRUE,
+#'            sep="|",
+#'            colClasses=c("character","integer","character","character")
+#'        )
+#'    tab
+#'    col_classes(tab)
+#'
+#'    res<- is_not_applicable(tab)
+#'    col_classes(res)
+#'    res
+#'
+#' @export
+`is_not_applicable`<- function(x) {
+    assert(
+        is.vector(x) |
+        is.data.frame(x) |
+        is.matrix(x)
+    )
+    `.is_not_applicable`<- function(x) {
+        if (is.character(x))
+            return(tutils::trim(x)=="N/A")
+        out<- logical(length(x))
+        out[is.na(x)]<- NA
+
+        out
+    }
+    if (is.data.frame(x)) {
+        x[]<- lapply(x, .is_not_applicable)
+    }
+    else if (is.vector(x)) {
+        x<- .is_not_applicable(x)
+    }
+
+    x
+}
+
+#' Finds strings that are purely whitespace
+#'
+#' Finds strings that consist purely of whitespace (note: not merely strings
+#' that \emph{contain} whitespace)
+#'
+#' @param  x \code{\link{character}} \code{\link{vector}}, or \code{\link{data.frame}}
+#'
+#' @return \code{\link{data.frame}} with same structure as \code{x}, but with
+#'   entries of mode \code{\link{logical}}, or \code{\link{character}}
+#'   \code{\link{vector}} with entries of mode \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{gsub}}
+#'
+#' @seealso \code{\link{gsub}}
+#'
+#' @examples
+#'    tab<- read.table(text='Name| Age|Salary|ID
+#'             | |32k|1
+#'             N/A| NA|21k|2
+#'             Harry| NA|NA|NA',
+#'            header=TRUE,
+#'            sep="|",
+#'            colClasses=c("character","character","character","integer")
+#'        )
+#'    tab
+#'    col_classes(tab)
+#'    # these two columns contain whitespace:
+#'    tab[, 1]
+#'    tab[, 2]
+#'
+#'    res<- is_whitespace(tab)
+#'    col_classes(res)
+#'    res
+#'
+#' @export
+`is_whitespace`<- function(x) {
+    assert(
+        is.vector(x) |
+        is.data.frame(x) |
+        is.matrix(x)
+    )
+    `.is_whitespace`<- function(x) {
+        if (is.character(x))
+            return(gsub("[[:space:]]", "", x)=="")
+        out<- logical(length(x))
+        out[is.na(x)]<- NA
+
+        out
+    }
+    if (is.data.frame(x)) {
+        x[]<- lapply(x, .is_whitespace)
+    }
+    else if (is.vector(x)) {
+        x<- .is_whitespace(x)
+    }
+
+    x
+}

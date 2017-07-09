@@ -203,9 +203,9 @@ if (0) {
 	return(out)
 }
 
-#' appends an object to the back of a list
+#' Appends an object to the back of a list
 #'
-#' appends an object to the back of a list
+#' Appends an object to the back of a list
 #' @param  x \code{\link{list}} list of objects
 #' @param  y \code{\link{list}} list of objects to append to \code{x}
 #'
@@ -366,9 +366,10 @@ function(x, y) {
 	return(invisible())
 }
 
-#' copy object
+#' Put a variable(s) into a specified \code{\link{environment}}.
 #'
-#' copy a single variable from one environment to another environment
+#' Put a variable(s) into a specified \code{\link{environment}}, \emph{i.e.}
+#' copy a variable(s) from one environment to another environment
 #'
 #' @param var \code{\link{character}} name of variable in \code{from.envir} to copy
 #' @param from.envir \code{\link{environment}} where variable is to be copied from
@@ -396,9 +397,9 @@ function(x, y) {
 	return(invisible())
 }
 
-#' check for try-error
+#' Check for try-error
 #'
-#' checks to see if a try-error occurred
+#' Checks to see if a try-error occurred
 #'
 #'
 #' @param  x \code{\link{try}}
@@ -435,7 +436,7 @@ function(x, y) {
 
 #' Reload a single object written with the function save
 #'
-#' load_as reloads the contents of a single object that was saved in .Rdata format into the workspace
+#' \code{load_as} reloads the contents of a single object that was saved in .Rdata format into the workspace
 #'
 #' @param  file \code{\link{character}} file name of the stored object to reload
 #'
@@ -754,4 +755,559 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 		else error(sprintf("'%s' has no file extension ... cannot save data", file))
 	}
 	else error("'file' is empty ... cannot save data")
+}
+
+
+#' Get column classes in \code{\link{data.frame}}
+#'
+#' Get column classes in \code{\link{data.frame}}
+#'
+#' @param  DF \code{\link{data.frame}} or \code{\link{matrix}}
+#' @param  flip \code{\link{logical}} flips results sideways, if \code{TRUE}
+#'
+#' @return named \code{\link{vector}} of \code{\link{character}} strings
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{class}}
+#'
+#' @seealso \code{\link{class}}
+#'
+#' @examples
+#'	 DF<- data.frame(
+#'        names=c("one","two","three"),
+#'        numbers=1:3,
+#'        stringsAsFactors=FALSE
+#'   )
+#'
+#'	 out<- col_classes(DF)
+#'
+#'	 all(colnames(out)==c("names","numbers"))
+#'	 out["names"] == "character"
+#'	 out["numbers"] == "integer"
+#'
+#' @export
+`col_classes`<- function(DF, flip=FALSE) {
+	assert(inherits(DF, "data.frame") | is.matrix(DF))
+
+    if (all(dim(DF)==c(0,0)))
+        return(matrix(, nr=0, nc=0))
+
+	out<-        character(ncol(DF))
+	names(out)<- colnames(DF)
+
+	for (col in 1:ncol(DF))
+		out[col]<- paste(class(DF[[col]]), collapse=", ")
+
+    if (flip)
+        return(as.matrix(out))
+
+	return(out)
+}
+
+
+#' Find row-col location of a search string in \code{\link{data.frame}}
+#'
+#' Description: What the function does in more detail
+#'
+#' @param  term \code{\link{character}} string to search for
+#' @param  DF \code{\link{data.frame}} or \code{\link{matrix}} to search
+#' @param  ROW.FUN \code{\link{function}} for row search
+#' @param  COL.FUN \code{\link{function}} for column search
+#'
+#' @return named \code{\link{vector}} with row & col location of search
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{match}}, \code{\link{grep}}
+#'
+#' @seealso \code{\link{match}}, \code{\link{grep}}
+#'
+#' @examples
+#'	tab<- read.csv(con<- textConnection(
+#'	"Name,    Age, Salary
+#'	 Derek  ,  NA,    32k		# <- NOTE: 'Derek  '
+#'	 Tom,      26,    21k
+#'	 NA,       NA,     NA
+#'	 Harry,    31,    50k"
+#'	), header=TRUE, colClasses=c("character","integer","character"), comment.char="#"); close(con)
+#'
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="first", COL.FUN="first")
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="first", COL.FUN="last")
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="last", COL.FUN="first")
+#'	match_col("NON-MATCHING-STRING", tab, ROW.FUN="last", COL.FUN="last")
+#'
+#'	result<-        rep(NA,2)
+#'	names(result)<- c("row","col")
+#'
+#'	result["row"]<- 1; result["col"]<- 1
+#'	all.equal(match_col("k", tab, ROW.FUN=tutils::first, COL.FUN=tutils::first), result)
+#'
+#'	result["row"]<- 1; result["col"]<- 3
+#'	all.equal(match_col("k", tab, ROW.FUN=tutils::first, COL.FUN=tutils::last), result)
+#'
+#'	result["row"]<- 4; result["col"]<- 1
+#'	all.equal(match_col("r", tab, ROW.FUN=tutils::last, COL.FUN=tutils::first), result)	# <- NOTE: testing for "r"
+#'
+#'	result["row"]<- 4; result["col"]<- 3
+#'	all.equal(match_col("k", tab, ROW.FUN=tutils::last, COL.FUN=tutils::last), result)	# <- NOTE: testing for "k"
+#'
+#' @export
+`match_col`<- function(
+	term,
+	DF,
+	ROW.FUN=c("first", "last"),
+	COL.FUN=c("first", "last")
+) {
+    `make_row_col`<- function() {
+        out<-        rep(NA, 2)
+        names(out)<- c("row", "col")
+
+        return(out)
+    }
+
+	assert(
+        is.character(term),
+        inherits(DF, "data.frame") | is.matrix(DF)
+    )
+
+	ROW.FUN<- match.fun(ROW.FUN)
+	COL.FUN<- match.fun(COL.FUN)
+	out<-     make_row_col()
+
+	if (any(cols.character<- col_classes(DF) %in% "character")) {
+		rows<- apply(DF, 1, FUN=function(x) COL.FUN(grep(term, x)))
+		ix<-   which(!is.na(rows))
+		if (length(ix)) {
+			out["row"]<- ROW.FUN(ix)
+			out["col"]<- rows[out["row"]]
+		}
+	}
+
+	return(out)
+}
+
+
+#' Remove all columns or rows from \code{\link{data.frame}} matching criterion
+#'
+#' Remove all columns or rows from \code{\link{data.frame}} matching criterion
+#'
+#' @param  DF \code{\link{data.frame}} or  \code{\link{matrix}}
+#' @param  fun \code{\link{function}} with criterion for removal
+#'
+#' @return \code{\link{data.frame}} or \code{\link{matrix}} with matching removed
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{grep}}, \code{\link{match}}
+#'
+#' @seealso \code{\link{grep}}, \code{\link{match}}
+#'
+#' @examples
+#'	FUN<- function(x) is_blank(x) | is.na(x)
+#'
+#'	tab<- read.table(con<- textConnection(
+#'	"Name  Age Salary
+#'	 Dick   NA    32k
+#'	 Tom    NA    21k
+#'	 NA     NA    NA"
+#'	), header=TRUE, colClasses=c("character","integer","character")); close(con)
+#'
+#'
+#'  remove_from_rows(tab, fun=FUN)
+#'  remove_from(tab, fun=FUN, dim="row")
+#'
+#'  remove_from_cols(tab, fun=FUN)
+#'  remove_from(tab, fun=FUN, dim="col")
+#'
+#'  remove_from(tab, fun=FUN, dim="both")
+#'
+#' @export
+#' @name remove_from
+`remove_from`<- function(DF, fun, dim=c("both","rows","cols")) {
+	assert(
+        inherits(DF, "data.frame") | is.matrix(DF),
+        is.function(fun)
+    )
+	dim<- match.arg(dim)
+
+	switch(dim,
+		both    = {
+			DF<- remove_from_rows(remove_from_cols(DF, fun), fun)
+		},
+		rows    = {
+			DF<- remove_from_rows(DF, fun)
+		},
+		cols = {
+			DF<- remove_from_cols(DF, fun)
+		}
+	)
+
+    DF
+}
+
+
+#' @export
+#' @rdname remove_from
+`remove_from_rows`<- function(DF, fun) {
+	assert(
+        inherits(DF, "data.frame") | is.matrix(DF),
+        is.function(fun)
+    )
+
+    rm.ix<- which(apply(fun(DF), 1, sum)==ncol(DF))
+    if (length(rm.ix))
+        DF<- DF[-rm.ix, ]
+
+    DF
+}
+
+
+#' @export
+#' @rdname remove_from
+`remove_from_cols`<- function(DF, fun) {
+	assert(
+        inherits(DF, "data.frame") | is.matrix(DF),
+        is.function(fun)
+    )
+
+    rm.ix<- which(apply(fun(DF), 2, sum)==nrow(DF))
+    if (length(rm.ix))
+        DF<- DF[, -rm.ix]
+
+    DF
+}
+
+
+#' Re-order named columns to front or back of \code{\link{data.frame}}
+#'
+#' Re-order named columns to front or back of \code{\link{data.frame}}
+#'
+#' @param  x \code{\link{data.frame}}
+#' @param  cn \code{\link{character}} \code{\link{vector}} of column names
+#'
+#' @return \code{\link{data.frame}} with re-ordered columns
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{data.frame}}, \code{\link{dplyr::everything}}
+#'
+#' @seealso \code{\link{data.frame}}, \code{\link{dplyr::everything}},
+#'   \url{http://stackoverflow.com/questions/27865865/in-dplyr-how-to-delete-and-rename-columns-that-dont-exist-manipulate-all-name}
+#'
+#' @examples
+#'	tab<- read.table(
+#'        con<- textConnection(
+#'            "Name    Age Salary ID
+#'             Dick     38    32k  1
+#'             Tom      21    21k  2
+#'             Harry    56     NA  3"
+#'        ),
+#'        header=TRUE,
+#'        colClasses=c("character","integer","character","integer")
+#'    )
+#'    close(con)
+#'  tab
+#'
+#'  tab %>% order_cn_front(c("Salary","Age"))
+#'  tab %>% order_cn_back(c("Salary","Age"))
+#'
+#' @export
+#' @name order_cn
+`order_cn_front`<- function(x, cn) {
+    assert(
+        inherits(x, "data.frame"),
+        cn %in% (orig.cn<- colnames(x))
+    )
+
+    x %>% select(one_of(c(cn, setdiff(orig.cn, cn))))
+}
+
+
+#' @export
+#' @rdname order_cn
+`order_cn_back`<- function(x, cn) {
+    assert(
+        inherits(x, "data.frame"),
+        cn %in% (orig.cn<- colnames(x))
+    )
+
+    x %>% select(one_of(c(setdiff(orig.cn, cn), cn)))
+}
+
+
+#' Check that objects are equal to within some numerical tolerance
+#'
+#' Check that objects are equal to within some numerical tolerance
+#'
+#' @param  x \code{\link{vector}}
+#' @param  y \code{\link{vector}}
+#' @param  tol \code{\link{numeric}} tolerance
+#' @param  pct \code{\link{logical}} tolerance is a percentage of mean
+#' @param  each \code{\link{logical}} returns element-by-element comparison, if \code{TRUE}
+#' @param  na.rm \code{\link{logical}} remove NAs, if \code{TRUE}
+#'
+#' @return \code{\link{logical}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{mean}}
+#'
+#' @seealso \code{\link{mean}}
+#'
+#' @examples
+#'    x<- c(NA, 1:10)
+#'    set.seed(1)
+#'    y<- x + rnorm(length(x), sd=.01)
+#'    cbind(x, y)
+#'
+#'    equal_tol(x, y, tol=0.1, na.rm=TRUE)
+#'    equal_tol(x, y, tol=0.1, pct=TRUE, na.rm=TRUE)
+#'    equal_tol(x, y, tol=0.1, each=TRUE, na.rm=TRUE)
+#'    all(equal_tol(x, y, tol=0.1, each=TRUE, na.rm=TRUE))
+#'
+#' @export
+`equal_tol`<- function(x, y, tol=1, pct=FALSE, each=FALSE, na.rm=FALSE) {
+    # Might be unpredictable if x and y aren't simple numeric vectors
+    assert(length(x) == length(y))
+
+    if (na.rm) {
+        rm.ix<- is.na(x) | is.na(y)
+        x<- x[!rm.ix]
+        y<- y[!rm.ix]
+    }
+    else{
+        if (any(is.na(x), is.na(y)))
+            stop("NAs found")
+    }
+
+    if (pct) {
+        assert(tol >= 0)
+        compar<- abs(x - y) / abs(mean(c(x,y)))
+    }
+    else {
+        compar<- abs(x - y)
+    }
+
+    if (each)
+        out<- compar < tol
+    else
+        out<- all(compar < tol)
+
+    out
+}
+
+
+#' Alternative to \code{\link{plyr::rbind.fill}} which can be memory-intensive
+#'
+#' A plausible alternative to \code{\link{plyr::rbind.fill}}  which can be very memory-intensive
+#'
+#' @param  x \code{\link{list}} of objects inheriting from \code{\link{data.frame}}
+#' @param  verbose \code{\link{logical}} print output information
+#'
+#' @return \code{\link{data.frame}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{plyr::rbind.fill}}
+#'
+#' @seealso \code{\link{plyr::rbind.fill}}
+#'
+#' @examples
+#'   x<- list(
+#'        mtcars[c("mpg", "wt")],
+#'        mtcars[c("wt", "cyl")]
+#'   )
+#'
+#'   rbind_pad(x)
+#'   plyr::rbind.fill(x)
+#'
+#' @export
+`rbind_pad`<- function(x, verbose=FALSE) {
+    assert(
+        is.list(x),
+        all(sapply(x, inherits, "data.frame"))
+    )
+
+    `make.padded.data.frame`<- function(x) {
+        # get a list of colnames and atomic classes
+        lapply(x, function(x) {
+            if (any(is.na(colnames(x)) | is_blank(colnames(x))))
+                stop("all colnames not named")
+        })-> junk
+        d<- do.call("rbind", lapply(x, function(x) {
+            data.frame(colname=names(col_classes(x)),
+                            colClass=col_classes(x),
+                            stringsAsFactors=FALSE
+            )
+        }))
+
+        # ensure that each unique colname has only one associated class
+        sapply(unique(d$colname), function(nm) {
+               if (length(unique(d$colClass[match(nm, d$colname)]))!=1) {
+                   stop(sprintf("problem with '%s' - multiple classes found: '%s'\n",
+                                nm, paste(d$colClass[match(nm, d$colClass)], collapse=", ")))
+               }
+        })-> junk
+
+        d<- d[match(unique(d$colname), d$colname), ]
+
+        # clever way of setting up a data.frame with zero rows and column classes prespecified
+        #     http://stackoverflow.com/questions/10689055/create-an-empty-data-frame
+        read.table(text="",
+                   colClasses=d$colClass,
+                   col.names=d$colname,
+                   stringsAsFactors=FALSE,
+                   check.names=FALSE
+        )
+    }
+    DF<- make.padded.data.frame(x)
+
+    # preallocate data.frame
+    nrow.total<-          sum(sapply(x, nrow))
+    out<-                 DF
+    out[1:nrow.total, ]<- rep(NA, ncol(DF))
+
+    end<-   0
+    for (i in 1:length(x)) {
+        if (nrow(x[[i]])==0)
+            next
+        start<- end+1
+        end<-   start+nrow(x[[i]])-1
+        if (verbose) cat(sprintf("doing %s\n", ifelse(is.null(names(x)), i, names(x)[i])))
+        out[start:end, match(colnames(x[[i]]), colnames(DF))]<- x[[i]]
+    }
+
+    out
+}
+
+
+#' Cumulative set functions.
+#'
+#' Cumulative set functions.
+#'
+#' @param  x \code{list} containing objects to which \code{\link{intersect}} can be applied
+#'
+#' @return intersection of \code{list} objects
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{intersect}}, \code{\link{Reduce}}
+#'
+#' @seealso \code{\link{intersect}}, \code{\link{Reduce}}
+#'
+#' @examples
+#'   sets<- list(
+#'       1:3,
+#'       2:4,
+#'       3:5
+#'   )
+#'
+#'   unlist(last(Intersect(sets)))
+#'   unlist(last(Union(sets)))
+#'
+#' @export
+#' @name set_fns
+`Intersect`<- function(x) {
+    Reduce("intersect", x, accumulate=TRUE)
+}
+
+
+#' @export
+#' @rdname set_fns
+`Union`<-     function(x) {
+    Reduce("union", x, accumulate=TRUE)
+}
+
+
+#' Bind an object to an environment
+#'
+#' Bind an object to an \code{\link{environment}}. If the object is a
+#' \code{\link{function}} then the environment of the
+#' \code{\link{function}} is also set to the \code{\link{environment}}.
+#'
+#' @param  object of any type
+#' @param  envir \code{\link{environment}} to which to bind \code{object}
+#'
+#' @return \code{\link{invisible}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{environment}}, \code{\link{function}}
+#'
+#' @seealso \code{\link{environment}}, \code{\link{function}}
+#'
+#' @examples
+#'    e<- new.env()
+#'
+#'    x<- 1:3
+#'    `fun`<- function() {
+#'        x
+#'    }
+#'
+#'    bind_to_env(x, env=e)
+#'    bind_to_env(fun, env=e)
+#'    x<- 1:10
+#'
+#'    all.equal(
+#'        fun(), 1:10
+#'    )
+#'
+#'    whos(sort="Name", env=e, omit=NULL)
+#'
+#' @export
+`bind_to_env`<- function(object, envir) {
+    assert(is.environment(envir))
+
+    nm<- as.character(substitute(object))
+    assign(nm, object, env=envir)
+    if (is.function(object))
+		environment(envir[[nm]])<- as.environment(envir)
+
+    invisible()
+}
+
+
+#' Open up a \code{\link{tibble}} (or similar) \code{\link{data.frame}}
+#'
+#' Open up a \code{\link{tibble}} (or similar) \code{\link{data.frame}}.
+#' Printing a \code{\link{tibble}} typically only displays a few rows
+#' of the table. \code{+} is used to open up the table fully, as if
+#' it were a \code{\link{data.frame}}.
+#'
+#' @param  e1 any object, or a \code{\link{data.frame}}
+#' @param  e2 any other object
+#'
+#' @return \code{\link{data.frame}}
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{data.frame}}, \code{\link{tibble}}, \code{\link{tbl_df}}
+#'
+#' @seealso \code{\link{data.frame}}, \code{\link{tibble}}, \code{\link{tbl_df}}
+#'
+#' @examples
+#' # mtcars is a regular data.frame
+#'   mtcars
+#'   mtcars %>% tbl_df
+#'   mtcars %>% tbl_df %>% `+`
+#'
+#' # with typical use as follows:
+#'   x<- mtcars %>% tbl_df
+#'   x
+#'   +x
+#'
+#' @export
+`+`<- function(e1, e2) {
+    if (is.data.frame(e1) && missing(e2)) {
+        as.data.frame(e1)
+    }
+    else {
+        if (missing(e2)) {
+            base::`+`(e1)
+        }
+        else {
+            base::`+`(e1, e2)
+        }
+    }
 }

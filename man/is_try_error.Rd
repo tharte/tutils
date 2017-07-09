@@ -2,7 +2,7 @@
 % Please edit documentation in R/object-utils.R
 \name{is_try_error}
 \alias{is_try_error}
-\title{check for try-error}
+\title{Check for try-error}
 \usage{
 is_try_error(x)
 }
@@ -13,7 +13,7 @@ is_try_error(x)
 \code{\link{logical}}
 }
 \description{
-checks to see if a try-error occurred
+Checks to see if a try-error occurred
 }
 \examples{
 e<- new.env()

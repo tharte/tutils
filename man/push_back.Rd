@@ -2,7 +2,7 @@
 % Please edit documentation in R/object-utils.R
 \name{push_back}
 \alias{push_back}
-\title{appends an object to the back of a list}
+\title{Appends an object to the back of a list}
 \usage{
 push_back(x, y)
 }
@@ -15,7 +15,7 @@ push_back(x, y)
 \code{\link{character}}
 }
 \description{
-appends an object to the back of a list
+Appends an object to the back of a list
 }
 \examples{
 # zero-length list x: append zero-length object y:
