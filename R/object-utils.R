@@ -736,6 +736,8 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 					write.table(make.xsv.data.frame(z),
 						file=file, quote=FALSE, sep="\t", ...)
 				},
+                stop("'xls' [sic] no longer supported")
+if (0) {
 				"xls" = {
 					switch(Sys.info()["sysname"],
 						Windows = {
@@ -744,6 +746,7 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 						}
 					)
 				},
+}
 				"rdata" = {
 					# z<- as.character(substitute(z))
 					# save(get(z, envir=environment()), file=file, ...)

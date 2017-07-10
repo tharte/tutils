@@ -7,7 +7,10 @@
 
 	switch(Sys.info()["sysname"],
 		Windows = {
+# FIXME: remove all xlsReadWrite : upgrade to openxlsx only
+if (0) {
 			require(xlsReadWrite, quietly=FALSE)
+}
 		},
 		Linux = {
 			# the (default) type="cairo" for x11 is an antialiasing
