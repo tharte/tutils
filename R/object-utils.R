@@ -736,17 +736,17 @@ function(x, cn, decreasing=FALSE, na.last=NA) {
 					write.table(make.xsv.data.frame(z),
 						file=file, quote=FALSE, sep="\t", ...)
 				},
+				"xls" = {
                 stop("'xls' [sic] no longer supported")
 if (0) {
-				"xls" = {
 					switch(Sys.info()["sysname"],
 						Windows = {
 							require(xlsReadWrite, quietly=FALSE)
 							write.xls(as.data.frame(z), file=file, ...)
 						}
 					)
-				},
 }
+				},
 				"rdata" = {
 					# z<- as.character(substitute(z))
 					# save(get(z, envir=environment()), file=file, ...)
