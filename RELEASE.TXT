@@ -1,5 +1,5 @@
-v_0.1    ::  2017-07-01: tutils - ORIGINAL version [backwards compatible with prior source]
-v_0.2.0  ::  2017-07-02: rename functions with '.' -> '_'; re-org files to e.g. object-utils.R
-v_0.2.1  ::  2017-07-02: add man/*.Rd [devtools::install_github does not build .Rd files]
-v_0.2.2  ::  2017-07-04: add test suite [testthat]
 v_0.3.0  ::  2017-07-09: expand functionality with (what was formerly) utils.R
+v_0.2.2  ::  2017-07-04: add test suite [testthat]
+v_0.2.1  ::  2017-07-02: add man/*.Rd [devtools::install_github does not build .Rd files]
+v_0.2.0  ::  2017-07-02: rename functions with '.' -> '_'; re-org files to e.g. object-utils.R
+v_0.1    ::  2017-07-01: tutils - ORIGINAL version [backwards compatible with prior source]
