@@ -1,3 +1,4 @@
+v_0.3.2  ::  2017-12-30: add pryr as a dependency before dplyr [prevents clashes]
 v_0.3.1  ::  2017-07-10: BUGFIX re xlsReadWrite
 v_0.3.0  ::  2017-07-09: expand functionality with (what was formerly) utils.R
 v_0.2.2  ::  2017-07-04: add test suite [testthat]
