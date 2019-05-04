@@ -315,9 +315,9 @@ function(tickers, 		# Bloomberg ticker symbols
 }
 
 
-#' Use system \code{cut} (*NIX) only
+#' Use system \code{cut} (*NIX only)
 #'
-#' Use system \code{cut} (*NIX) only. For large files this is much faster
+#' Use system \code{cut} (*NIX only). For large files this is much faster
 #' than reading the file into R and cutting the columns.
 #'
 #' @param  cols \code{\link{integer}} \code{\link{vector}} index of columns to cut
@@ -375,9 +375,9 @@ function(tickers, 		# Bloomberg ticker symbols
 }
 
 
-#' Use system \code{grep} (*NIX) only
+#' Use system \code{grep} (*NIX only)
 #'
-#' Use system \code{grep} (*NIX) only. For large files this is much faster
+#' Use system \code{grep} (*NIX only). For large files this is much faster
 #' than reading the file into R and grepping the columns.
 #'
 #' @param  pattern \code{\link{character}} to search
@@ -424,4 +424,76 @@ function(tickers, 		# Bloomberg ticker symbols
     command<- sprintf("%s %s '%s' %s", .grep, options, pattern, filename)
 
     system(command, intern=TRUE)
+}
+
+
+#' Use system \code{pdflatex} (*NIX only) to compile tikz output
+#'
+#' Use system \code{pdflatex} (*NIX only) to compile tikz output. 
+#' \code{\link{pdftikz}} will save the current directory, change
+#' to the directory of the filename and execute pdflatex on the 
+#' tikz output to produce a pdf file
+#'
+#' @param  filename \code{\link{character}} file name
+#'
+#' @return output of \code{tryCatch} block
+#'
+#' @author Thomas P. Harte
+#'
+#' @keywords \code{\link{system}}, \code{pdflatex}
+#'
+#' @seealso \code{\link{system}}
+#'
+#' @examples
+#' # reproduce cover PDF from:
+#' #     https://cran.r-project.org/web/packages/tikzDevice/vignettes/tikzDevice.pdf
+#' d<- tempdir()
+#' filename<- file.path(d, 'cover-pdf.tex')
+#' require(tikzDevice)
+#' tikz(file=filename, width=4, height=4, standAlone=TRUE)
+#' par(las=1)
+#' 
+#' x <- seq(-4.5,4.5,length.out=100)
+#' y <- dnorm(x)
+#' 
+#' xi <- seq(-2,2,length.out=30)
+#' yi <- dnorm(xi)
+#' 
+#' plot(x,y,type='l',col='blue',ylab='$p(x)$',xlab='$x$')
+#' lines(xi,yi,type='s')
+#' lines(range(xi),c(0,0))
+#' lines(xi,yi,type='h')
+#' title(main="$p(x)=\\frac{1}{\\sqrt{2\\pi}}e^{-\\frac{x^2}{2}}$")
+#' int <- integrate(dnorm,min(xi),max(xi),subdivisions=length(xi))
+#' text(2.8, 0.35,
+#'     paste(
+#' 	"\\small$\\displaystyle\\int_{",min(xi),"}^{",max(xi),"}p(x)dx",
+#' 	"\\approx", round(int[['value']], 3), '$', 
+#'         sep=''
+#'     )
+#' )
+#' 
+#' dev.off()
+#' pdftikz(filename)
+#'
+#' @export
+`pdftikz`<- function(filename) {
+    assert(file.exists(filename))
+    od<- getwd()
+
+    o<- tryCatch({
+            nd<- dirname(filename)
+	    cmd<- sprintf("cd %s && pdflatex %s", nd, basename(filename))
+	    system(cmd)
+	},
+	error = function(e) {
+	    print(paste('pdftikz: ', e))
+	    stop(sprintf('pdftikz: could not compile %s', filename))
+	},
+	finally = {
+	    setwd(od)
+	}
+    )
+
+    o
 }
