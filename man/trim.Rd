@@ -5,7 +5,6 @@
 \alias{triml,}
 \alias{trimr}
 \alias{triml}
-\alias{trimr}
 \title{Trim whitespace}
 \usage{
 trim(str)

@@ -4,7 +4,7 @@
 \alias{assert}
 \title{Asserts that the condition(s) is true}
 \usage{
-assert(...)
+assert(..., exprs, local = TRUE)
 }
 \description{
 Asserts that the condition(s) is true
