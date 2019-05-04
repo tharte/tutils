@@ -1,8 +1,4 @@
 .onLoad<- function(libname, pkgname) {
-    # FIXME: This mechanism for loading dependent libraries has been
-    #       almost entirely superseded by using the 'Depends:' field in the
-    #       'DESCRIPTION' file of a package.
-    #	require(zoo, quietly=FALSE)
     switch(Sys.info()["sysname"],
         Windows = {
             # none
