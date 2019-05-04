@@ -10,7 +10,7 @@ pdftikz(filename)
 \item{filename}{\code{\link{character}} file name}
 }
 \value{
-\code{\link{any}} output from \code{tryCatch} block
+output of \code{tryCatch} block
 }
 \description{
 Use system \code{pdflatex} (*NIX) only to compile tikz output. 
