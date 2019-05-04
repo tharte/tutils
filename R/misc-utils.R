@@ -436,7 +436,7 @@ function(tickers, 		# Bloomberg ticker symbols
 #'
 #' @param  filename \code{\link{character}} file name
 #'
-#' @return \code{\link{any}} output from \code{tryCatch} block
+#' @return output of \code{tryCatch} block
 #'
 #' @author Thomas P. Harte
 #'
@@ -449,6 +449,7 @@ function(tickers, 		# Bloomberg ticker symbols
 #' #     https://cran.r-project.org/web/packages/tikzDevice/vignettes/tikzDevice.pdf
 #' d<- tempdir()
 #' filename<- file.path(d, 'cover-pdf.tex')
+#' require(tikzDevice)
 #' tikz(file=filename, width=4, height=4, standAlone=TRUE)
 #' par(las=1)
 #' 
@@ -474,8 +475,6 @@ function(tickers, 		# Bloomberg ticker symbols
 #' 
 #' dev.off()
 #' pdftikz(filename)
-#'
-#' unlink(filename)
 #'
 #' @export
 `pdftikz`<- function(filename) {
