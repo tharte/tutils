@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc-utils.R
 \name{pdftikz}
 \alias{pdftikz}
-\title{Use system \code{pdflatex} (*NIX) only to compile tikz output}
+\title{Use system \code{pdflatex} (*NIX only) to compile tikz output}
 \usage{
 pdftikz(filename)
 }
@@ -13,7 +13,7 @@ pdftikz(filename)
 output of \code{tryCatch} block
 }
 \description{
-Use system \code{pdflatex} (*NIX) only to compile tikz output. 
+Use system \code{pdflatex} (*NIX only) to compile tikz output. 
 \code{\link{pdftikz}} will save the current directory, change
 to the directory of the filename and execute pdflatex on the 
 tikz output to produce a pdf file

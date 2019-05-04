@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc-utils.R
 \name{cut_system}
 \alias{cut_system}
-\title{Use system \code{cut} (*NIX) only}
+\title{Use system \code{cut} (*NIX only)}
 \usage{
 cut_system(cols, filename, sep = "|")
 }
@@ -17,7 +17,7 @@ cut_system(cols, filename, sep = "|")
 \code{\link{character}} \code{\link{vector}} output from \code{cut}
 }
 \description{
-Use system \code{cut} (*NIX) only. For large files this is much faster
+Use system \code{cut} (*NIX only). For large files this is much faster
 than reading the file into R and cutting the columns.
 }
 \examples{
