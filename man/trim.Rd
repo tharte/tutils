@@ -24,16 +24,16 @@ Trim whitespace from ends of \code{\link{character}} string
 }
 \examples{
 # left trim:
-cat(sprintf("'\\\%s'\\n", triml(" asdf qwerty \\t")))
-cat(sprintf("'\\\%s'\\n", triml("\\tasdf qwerty \\t")))
+cat(sprintf("'\%s'\\n", triml(" asdf qwerty \\t")))
+cat(sprintf("'\%s'\\n", triml("\\tasdf qwerty \\t")))
 # right trim:
-cat(sprintf("'\\\%s'\\n", trimr(" asdf qwerty \\t")))
-cat(sprintf("'\\\%s'\\n", trimr("\\tasdf qwerty \\t ")))
+cat(sprintf("'\%s'\\n", trimr(" asdf qwerty \\t")))
+cat(sprintf("'\%s'\\n", trimr("\\tasdf qwerty \\t ")))
 # left & right trim:
-cat(sprintf("'\\\%s'\\n", trim(" asdf qwerty \\t")))
-cat(sprintf("'\\\%s'\\n", trim("\\tasdf qwerty \\t")))
-cat(sprintf("'\\\%s'\\n", trim(" asdf qwerty \\t")))
-cat(sprintf("'\\\%s'\\n", trim("\\tasdf qwerty \\t ")))
+cat(sprintf("'\%s'\\n", trim(" asdf qwerty \\t")))
+cat(sprintf("'\%s'\\n", trim("\\tasdf qwerty \\t")))
+cat(sprintf("'\%s'\\n", trim(" asdf qwerty \\t")))
+cat(sprintf("'\%s'\\n", trim("\\tasdf qwerty \\t ")))
 
 }
 \seealso{
