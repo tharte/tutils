@@ -5,10 +5,7 @@
     #	require(zoo, quietly=FALSE)
     switch(Sys.info()["sysname"],
         Windows = {
-        # FIXME: remove all xlsReadWrite : upgrade to openxlsx only
-            if (0) {
-                require(xlsReadWrite, quietly=FALSE)
-            }
+            # none
         },
         Linux = {
             # the (default) type="cairo" for x11 is an antialiasing
