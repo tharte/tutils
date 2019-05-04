@@ -315,9 +315,9 @@ function(tickers, 		# Bloomberg ticker symbols
 }
 
 
-#' Use system \code{cut} (*NIX) only
+#' Use system \code{cut} (*NIX only)
 #'
-#' Use system \code{cut} (*NIX) only. For large files this is much faster
+#' Use system \code{cut} (*NIX only). For large files this is much faster
 #' than reading the file into R and cutting the columns.
 #'
 #' @param  cols \code{\link{integer}} \code{\link{vector}} index of columns to cut
@@ -375,9 +375,9 @@ function(tickers, 		# Bloomberg ticker symbols
 }
 
 
-#' Use system \code{grep} (*NIX) only
+#' Use system \code{grep} (*NIX only)
 #'
-#' Use system \code{grep} (*NIX) only. For large files this is much faster
+#' Use system \code{grep} (*NIX only). For large files this is much faster
 #' than reading the file into R and grepping the columns.
 #'
 #' @param  pattern \code{\link{character}} to search
@@ -427,9 +427,9 @@ function(tickers, 		# Bloomberg ticker symbols
 }
 
 
-#' Use system \code{pdflatex} (*NIX) only to compile tikz output
+#' Use system \code{pdflatex} (*NIX only) to compile tikz output
 #'
-#' Use system \code{pdflatex} (*NIX) only to compile tikz output. 
+#' Use system \code{pdflatex} (*NIX only) to compile tikz output. 
 #' \code{\link{pdftikz}} will save the current directory, change
 #' to the directory of the filename and execute pdflatex on the 
 #' tikz output to produce a pdf file
