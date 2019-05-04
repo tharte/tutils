@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc-utils.R
 \name{grep_system}
 \alias{grep_system}
-\title{Use system \code{grep} (*NIX) only}
+\title{Use system \code{grep} (*NIX only)}
 \usage{
 grep_system(pattern, filename, options = "")
 }
@@ -17,7 +17,7 @@ grep_system(pattern, filename, options = "")
 \code{\link{character}} \code{\link{vector}} output from \code{cut}
 }
 \description{
-Use system \code{grep} (*NIX) only. For large files this is much faster
+Use system \code{grep} (*NIX only). For large files this is much faster
 than reading the file into R and grepping the columns.
 }
 \examples{

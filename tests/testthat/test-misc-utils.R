@@ -126,3 +126,15 @@ test_that("'grep_system' works", {
     unlink(filename)
 
 })
+
+
+test_that("'pdftikz' works", {
+    od<- getwd()
+    
+    example(pdftikz)
+
+    expect_equal(
+        od,
+        getwd()
+    )
+})

@@ -11,7 +11,6 @@
 \alias{respectively}
 \alias{using}
 \alias{\code{\link{[}}}
-\alias{last}
 \title{Extract first / last object}
 \usage{
 first(x)
