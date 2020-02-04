@@ -632,102 +632,102 @@
     #> to.ISO.8601("33-04-31", year.left=TRUE)
     #[1] NA
     tab<- read.table(text=
-           "Test|ISO 8601|Class|year.left|american
-            Dec 13|2013-12|yearmon|TRUE|FALSE
-            Dec 13|2013-12|yearmon|FALSE|FALSE
-            Jan 01|2001-01|yearmon|TRUE|FALSE
-            Jan 01|2001-01|yearmon|FALSE|FALSE
-            13 Dec|2013-12|yearmon|TRUE|FALSE
-            13 Dec|2013-12|yearmon|FALSE|FALSE
-            01 Jan|2001-01|yearmon|TRUE|FALSE
-            01 Jan|2001-01|yearmon|FALSE|FALSE
-            Dec 2013|2013-12|yearmon|TRUE|FALSE
-            Dec 2013|2013-12|yearmon|FALSE|FALSE
-            Jan 2001|2001-01|yearmon|TRUE|FALSE
-            Jan 2001|2001-01|yearmon|FALSE|FALSE
-            2013 Dec|2013-12|yearmon|TRUE|FALSE
-            2013 Dec|2013-12|yearmon|FALSE|FALSE
-            2001 Jan|2001-01|yearmon|TRUE|FALSE
-            2001 Jan|2001-01|yearmon|FALSE|FALSE
-            12 13|2013-12|yearmon|TRUE|FALSE
-            12 13|2013-12|yearmon|FALSE|FALSE
-            01 01|2001-01|yearmon|TRUE|FALSE
-            01 01|2001-01|yearmon|FALSE|FALSE
-            2013/Dec/12|2013-12-12|Date|TRUE|FALSE
-            2013/Dec/12|2013-12-12|Date|FALSE|FALSE
-            2001/Jan/01|2001-01-01|Date|TRUE|FALSE
-            2001/Jan/01|2001-01-01|Date|FALSE|FALSE
-            12/Dec/2013|2013-12-12|Date|TRUE|FALSE
-            12/Dec/2013|2013-12-12|Date|FALSE|FALSE
-            01/Jan/2001|2001-01-01|Date|TRUE|FALSE
-            01/Jan/2001|2001-01-01|Date|FALSE|FALSE
-            13/12/12|2013-12-12|Date|TRUE|FALSE
-            13/12/12|2012-12-13|Date|FALSE|FALSE
-            01/01/01|2001-01-01|Date|TRUE|FALSE
-            01/01/01|2001-01-01|Date|FALSE|FALSE
-            01/04/14|2001-04-14|Date|TRUE|FALSE
-            01/04/14|2014-04-01|Date|FALSE|FALSE
-            01/04/14|2014-01-04|Date|TRUE|TRUE
-            01/04/14|2014-01-04|Date|FALSE|TRUE
-            12/12/13|2012-12-13|Date|TRUE|FALSE
-            12/12/13|2013-12-12|Date|FALSE|FALSE
-            01/01/01|2001-01-01|Date|TRUE|FALSE
-            01/01/01|2001-01-01|Date|FALSE|FALSE
-            2013/12/12|2013-12-12|Date|TRUE|FALSE
-            2013/12/12|2013-12-12|Date|FALSE|FALSE
-            2001/01/01|2001-01-01|Date|TRUE|FALSE
-            2001/01/01|2001-01-01|Date|FALSE|FALSE
-            12/12/2013|2013-12-12|Date|TRUE|FALSE
-            12/12/2013|2013-12-12|Date|FALSE|FALSE
-            01/01/2001|2001-01-01|Date|TRUE|FALSE
-            01/01/2001|2001-01-01|Date|FALSE|FALSE
-            01/04/2014|2014-04-01|Date|TRUE|FALSE
-            01/04/2014|2014-04-01|Date|FALSE|FALSE
-            01/04/2014|2014-01-04|Date|TRUE|TRUE
-            01/04/2014|2014-01-04|Date|FALSE|TRUE
-            2014-4-29|2014-04-29|Date|TRUE|FALSE
-            2014-4-29|2014-04-29|Date|FALSE|FALSE
-            2014-04-29|2014-04-29|Date|TRUE|FALSE
-            2014-04-29|2014-04-29|Date|FALSE|FALSE
-            2014-05-30|2014-05-30|Date|TRUE|FALSE
-            2014-05-30|2014-05-30|Date|FALSE|FALSE
-            29-04-2014|2014-04-29|Date|TRUE|FALSE
-            29-04-2014|2014-04-29|Date|FALSE|FALSE
-            30-05-2014|2014-05-30|Date|TRUE|FALSE
-            30-05-2014|2014-05-30|Date|FALSE|FALSE
-            29 Apr 13|2029-04-13|Date|TRUE|FALSE
-            29 Apr 13|2013-04-29|Date|FALSE|FALSE
-            30 May 14|2030-05-14|Date|TRUE|FALSE
-            30 May 14|2014-05-30|Date|FALSE|FALSE
-            29:Apr:13|2029-04-13|Date|TRUE|FALSE
-            29:Apr:13|2013-04-29|Date|FALSE|FALSE
-            30:May:14|2030-05-14|Date|TRUE|FALSE
-            30:May:14|2014-05-30|Date|FALSE|FALSE
-            Apr:13|2013-04|yearmon|TRUE|FALSE
-            Apr:13|2013-04|yearmon|FALSE|FALSE
-            May:14|2014-05|yearmon|TRUE|FALSE
-            May:14|2014-05|yearmon|FALSE|FALSE
-            13:Apr|2013-04|yearmon|TRUE|FALSE
-            13:Apr|2013-04|yearmon|FALSE|FALSE
-            14:May|2014-05|yearmon|TRUE|FALSE
-            14:May|2014-05|yearmon|FALSE|FALSE
-            29 12 13|2029-12-13|Date|TRUE|FALSE
-            29 12 13|2013-12-29|Date|FALSE|FALSE
-            30 12 14|2030-12-14|Date|TRUE|FALSE
-            30 12 14|2014-12-30|Date|FALSE|FALSE
-            29 12 2013|2013-12-29|Date|TRUE|FALSE
-            29 12 2013|2013-12-29|Date|FALSE|FALSE
-            30 12 2014|2014-12-30|Date|TRUE|FALSE
-            30 12 2014|2014-12-30|Date|FALSE|FALSE
-            2013 12 29|2013-12-29|Date|TRUE|FALSE
-            2013 12 29|2013-12-29|Date|FALSE|FALSE
-            2014 12 30|2014-12-30|Date|TRUE|FALSE
-            2014 12 30|2014-12-30|Date|FALSE|FALSE",
-                     sep="|",
-                     stringsAsFactors=FALSE,
-                     header=TRUE,
-                     colClass="character",
-                     check.names=FALSE
+        "Test|ISO 8601|Class|year.left|american
+        Dec 13|2013-12|yearmon|TRUE|FALSE
+        Dec 13|2013-12|yearmon|FALSE|FALSE
+        Jan 01|2001-01|yearmon|TRUE|FALSE
+        Jan 01|2001-01|yearmon|FALSE|FALSE
+        13 Dec|2013-12|yearmon|TRUE|FALSE
+        13 Dec|2013-12|yearmon|FALSE|FALSE
+        01 Jan|2001-01|yearmon|TRUE|FALSE
+        01 Jan|2001-01|yearmon|FALSE|FALSE
+        Dec 2013|2013-12|yearmon|TRUE|FALSE
+        Dec 2013|2013-12|yearmon|FALSE|FALSE
+        Jan 2001|2001-01|yearmon|TRUE|FALSE
+        Jan 2001|2001-01|yearmon|FALSE|FALSE
+        2013 Dec|2013-12|yearmon|TRUE|FALSE
+        2013 Dec|2013-12|yearmon|FALSE|FALSE
+        2001 Jan|2001-01|yearmon|TRUE|FALSE
+        2001 Jan|2001-01|yearmon|FALSE|FALSE
+        12 13|2013-12|yearmon|TRUE|FALSE
+        12 13|2013-12|yearmon|FALSE|FALSE
+        01 01|2001-01|yearmon|TRUE|FALSE
+        01 01|2001-01|yearmon|FALSE|FALSE
+        2013/Dec/12|2013-12-12|Date|TRUE|FALSE
+        2013/Dec/12|2013-12-12|Date|FALSE|FALSE
+        2001/Jan/01|2001-01-01|Date|TRUE|FALSE
+        2001/Jan/01|2001-01-01|Date|FALSE|FALSE
+        12/Dec/2013|2013-12-12|Date|TRUE|FALSE
+        12/Dec/2013|2013-12-12|Date|FALSE|FALSE
+        01/Jan/2001|2001-01-01|Date|TRUE|FALSE
+        01/Jan/2001|2001-01-01|Date|FALSE|FALSE
+        13/12/12|2013-12-12|Date|TRUE|FALSE
+        13/12/12|2012-12-13|Date|FALSE|FALSE
+        01/01/01|2001-01-01|Date|TRUE|FALSE
+        01/01/01|2001-01-01|Date|FALSE|FALSE
+        01/04/14|2001-04-14|Date|TRUE|FALSE
+        01/04/14|2014-04-01|Date|FALSE|FALSE
+        01/04/14|2014-01-04|Date|TRUE|TRUE
+        01/04/14|2014-01-04|Date|FALSE|TRUE
+        12/12/13|2012-12-13|Date|TRUE|FALSE
+        12/12/13|2013-12-12|Date|FALSE|FALSE
+        01/01/01|2001-01-01|Date|TRUE|FALSE
+        01/01/01|2001-01-01|Date|FALSE|FALSE
+        2013/12/12|2013-12-12|Date|TRUE|FALSE
+        2013/12/12|2013-12-12|Date|FALSE|FALSE
+        2001/01/01|2001-01-01|Date|TRUE|FALSE
+        2001/01/01|2001-01-01|Date|FALSE|FALSE
+        12/12/2013|2013-12-12|Date|TRUE|FALSE
+        12/12/2013|2013-12-12|Date|FALSE|FALSE
+        01/01/2001|2001-01-01|Date|TRUE|FALSE
+        01/01/2001|2001-01-01|Date|FALSE|FALSE
+        01/04/2014|2014-04-01|Date|TRUE|FALSE
+        01/04/2014|2014-04-01|Date|FALSE|FALSE
+        01/04/2014|2014-01-04|Date|TRUE|TRUE
+        01/04/2014|2014-01-04|Date|FALSE|TRUE
+        2014-4-29|2014-04-29|Date|TRUE|FALSE
+        2014-4-29|2014-04-29|Date|FALSE|FALSE
+        2014-04-29|2014-04-29|Date|TRUE|FALSE
+        2014-04-29|2014-04-29|Date|FALSE|FALSE
+        2014-05-30|2014-05-30|Date|TRUE|FALSE
+        2014-05-30|2014-05-30|Date|FALSE|FALSE
+        29-04-2014|2014-04-29|Date|TRUE|FALSE
+        29-04-2014|2014-04-29|Date|FALSE|FALSE
+        30-05-2014|2014-05-30|Date|TRUE|FALSE
+        30-05-2014|2014-05-30|Date|FALSE|FALSE
+        29 Apr 13|2029-04-13|Date|TRUE|FALSE
+        29 Apr 13|2013-04-29|Date|FALSE|FALSE
+        30 May 14|2030-05-14|Date|TRUE|FALSE
+        30 May 14|2014-05-30|Date|FALSE|FALSE
+        29:Apr:13|2029-04-13|Date|TRUE|FALSE
+        29:Apr:13|2013-04-29|Date|FALSE|FALSE
+        30:May:14|2030-05-14|Date|TRUE|FALSE
+        30:May:14|2014-05-30|Date|FALSE|FALSE
+        Apr:13|2013-04|yearmon|TRUE|FALSE
+        Apr:13|2013-04|yearmon|FALSE|FALSE
+        May:14|2014-05|yearmon|TRUE|FALSE
+        May:14|2014-05|yearmon|FALSE|FALSE
+        13:Apr|2013-04|yearmon|TRUE|FALSE
+        13:Apr|2013-04|yearmon|FALSE|FALSE
+        14:May|2014-05|yearmon|TRUE|FALSE
+        14:May|2014-05|yearmon|FALSE|FALSE
+        29 12 13|2029-12-13|Date|TRUE|FALSE
+        29 12 13|2013-12-29|Date|FALSE|FALSE
+        30 12 14|2030-12-14|Date|TRUE|FALSE
+        30 12 14|2014-12-30|Date|FALSE|FALSE
+        29 12 2013|2013-12-29|Date|TRUE|FALSE
+        29 12 2013|2013-12-29|Date|FALSE|FALSE
+        30 12 2014|2014-12-30|Date|TRUE|FALSE
+        30 12 2014|2014-12-30|Date|FALSE|FALSE
+        2013 12 29|2013-12-29|Date|TRUE|FALSE
+        2013 12 29|2013-12-29|Date|FALSE|FALSE
+        2014 12 30|2014-12-30|Date|TRUE|FALSE
+        2014 12 30|2014-12-30|Date|FALSE|FALSE",
+        sep="|",
+        stringsAsFactors=FALSE,
+        header=TRUE,
+        colClass="character",
+        check.names=FALSE
     )
     for (col in 1:ncol(tab)) tab[,col]<- tutils::trim(tab[,col])
     tab %<>% mutate(`Expected`=as.character(NA))
