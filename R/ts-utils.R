@@ -22,8 +22,8 @@
 #'
 #' @export
 `is_Date`<- function(x) {
-	# paste(class(x), collapse=", ")=="Date"
-	inherits(x, "Date")
+    # paste(class(x), collapse=", ")=="Date"
+    inherits(x, "Date")
 }
 
 
@@ -79,44 +79,44 @@
 #'   get_return(c(1, +Inf, 1.1), nan.replace=TRUE)
 #'
 #'   dates<- seq(as.Date("2011-01-01"), by=1, len=6)
-#'	 z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
+#'       z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
 #'
 #'   zoo::rollapply(z, 2, get_return, align="right", nan.replace=TRUE)
 #'   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
-#'   #	  NA        1.0        0.5       -1.0         NA
+#'   #    NA        1.0        0.5       -1.0         NA
 #'
 #'   zoo::rollapply(z, 2, get_return, align="right", nan.replace=FALSE)
 #'   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
-#'   #	  NA        1.0        0.5       -1.0         NaN
+#'   #    NA        1.0        0.5       -1.0         NaN
 #'
 #' @export
 `get_return`<- function(
     x,
-	nan.replace=FALSE
+    nan.replace=FALSE
 ) {
-	if (is.zoo(x))
-        x<- as.numeric(x)
-	x<- na.omit(x)
-	n<- length(x)
+    if (is.zoo(x))
+    x<- as.numeric(x)
+    x<- na.omit(x)
+    n<- length(x)
 
-	# we can only take a return when we have values for x[1] & x[2]
-	# regardless of whether or not they are one of:
-	#	0, NA, NaN, +Inf, -Inf
+    # we can only take a return when we have values for x[1] & x[2]
+    # regardless of whether or not they are one of:
+    #       0, NA, NaN, +Inf, -Inf
 
-	if (n<2) return(NA)
+    if (n<2) return(NA)
 
-	# if the values of x[1] and x[n] are one of:
-	#	0, NA, NaN, +Inf, -Inf
-	# then a non-a-number symbol will result
+    # if the values of x[1] and x[n] are one of:
+    #       0, NA, NaN, +Inf, -Inf
+    # then a non-a-number symbol will result
 
-	r<- x[n]/x[1]-1
+    r<- x[n]/x[1]-1
 
-	if (nan.replace) {
-		if (is.nan(r) | is.infinite(r))
-			return (NA)
-	}
+    if (nan.replace) {
+        if (is.nan(r) | is.infinite(r))
+            return (NA)
+    }
 
-	return(r)
+    return(r)
 }
 
 
@@ -146,24 +146,24 @@
 #'
 #'   zoo::rollapply(z, 2, get_diff, align="right")
 #'   # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
-#'   #	  NA        1.0        1.0       -3.0         0
+#'   #    NA        1.0        1.0       -3.0         0
 #'
 #' @export
 `get_diff`<- function(x) {
-	if (is.zoo(x)) x<- as.numeric(x)
-	x<- na.omit(x)
-	n<- length(x)
+    if (is.zoo(x)) x<- as.numeric(x)
+    x<- na.omit(x)
+    n<- length(x)
 
-	# we can only take a diff when we have values for x[1] & x[2]
-	if (n<2) return(NA)
+    # we can only take a diff when we have values for x[1] & x[2]
+    if (n<2) return(NA)
 
-	# if the values of x[1] and x[n] are one of 0 or the not-a-number symbols:
-	#	0, NA, NaN, +Inf, -Inf
-	# then a NaN (non-a-number) symbol will result
+    # if the values of x[1] and x[n] are one of 0 or the not-a-number symbols:
+    #       0, NA, NaN, +Inf, -Inf
+    # then a NaN (non-a-number) symbol will result
 
-	r<- x[n]-x[1]
+    r<- x[n]-x[1]
 
-	return(r)
+    return(r)
 }
 
 #' Coerce character strings to the Date class
@@ -218,8 +218,9 @@
         return(FALSE)
     }
     `.standardize.strs`<- function(strs) {
-        stopifnot(is.character(strs),
-                  mode(strs)=="character"
+        stopifnot(
+            is.character(strs),
+            mode(strs)=="character"
         )
         # remove extraneous characters
         # FIXME: could "," be used as a separator, e.g. other than 'Mar 30, 2012'?
