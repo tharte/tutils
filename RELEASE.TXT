@@ -1,3 +1,4 @@
+v_0.3.2.2 ::  2020-02-04: add log returns to ts-utils::get_return
 v_0.3.2.1 ::  2019-05-04: add pdftikz
 v_0.3.2   ::  2017-12-30: add pryr as a dependency before dplyr [prevents clashes]
 v_0.3.1   ::  2017-07-10: BUGFIX re xlsReadWrite
