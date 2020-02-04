@@ -92,6 +92,7 @@
 #' @export
 `get_return`<- function(
     x,
+    log.returns=FALSE,
     nan.replace=FALSE
 ) {
     if (is.zoo(x))
@@ -109,7 +110,13 @@
     #       0, NA, NaN, +Inf, -Inf
     # then a non-a-number symbol will result
 
-    r<- x[n]/x[1]-1
+    # gross returns
+    R<- x[n]/x[1]
+
+    if (log.returns)
+        r<- log(R)
+    else 
+        r<- R-1
 
     if (nan.replace) {
         if (is.nan(r) | is.infinite(r))
