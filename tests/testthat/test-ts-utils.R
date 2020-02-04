@@ -34,31 +34,57 @@ test_that("'get_return' works", {
     expect_equal(get_return(c(1,+Inf,1.1)), 0.1)
 
     dates<- seq(as.Date("2011-01-01"), by=1, len=6)
-        z<- zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
+    z<-     zoo(c(NA, 1, 2, 3, 0, 0), order.by=dates)
 
     z.res1<- zoo(
         c(NA, 1.0, 0.5, -1.0, NA),
         order.by=dates[2:length(dates)]
     )
     # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
-    #     NA        1.0        0.5       -1.0         NA
+    #         NA        1.0        0.5       -1.0         NA
+    # NOTE:   ^^                                         ^^^
 
     expect_equal(
         zoo::rollapply(z, 2, get_return, align="right", nan.replace=TRUE),
         z.res1
     )
 
+    z.res1.log<- zoo(
+        c(NA, log(2/1), log(3/2), log(0/3), log(0/0)),
+        order.by=dates[2:length(dates)]
+    )
+    # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06 
+    #    NA  0.6931472  0.4054651       -Inf        NaN 
+
+    expect_equal(
+        zoo::rollapply(z, 2, get_return, align="right", log.returns=TRUE, nan.replace=FALSE),
+        z.res1.log
+    )
 
     z.res2<- zoo(
         c(NA, 1.0, 0.5, -1.0, NaN),
         order.by=dates[2:length(dates)]
     )
-        # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
-        #         NA        1.0        0.5       -1.0        NaN
+    # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
+    #         NA        1.0        0.5       -1.0        NaN
+    # NOTE:   ^^                                         ^^^
 
     expect_equal(
         zoo::rollapply(z, 2, get_return, align="right", nan.replace=FALSE),
         z.res2
+    )
+
+    z.res2.log<- zoo(
+        c(NA, log(2/1), log(3/2), log(0/3), NaN),
+        order.by=dates[2:length(dates)]
+    )
+    # 2011-01-02 2011-01-03 2011-01-04 2011-01-05 2011-01-06
+    #         NA        1.0        0.5       -1.0        NaN
+    # NOTE:   ^^                                         ^^^
+
+    expect_equal(
+        zoo::rollapply(z, 2, get_return, align="right", log.returns=TRUE, nan.replace=FALSE),
+        z.res2.log
     )
 
 })
